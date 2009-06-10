@@ -1,0 +1,180 @@
+
+
+
+/* -- Form Styles ------------------------------- */
+form#uploader {	
+	margin: 0;
+	padding: 0;
+}
+
+
+
+#uploader fieldset {
+	border:  1px solid #afe14c;
+	margin: 5px 0;
+	padding: 20px 10px;
+}
+
+/* IE6 FIX */
+html #uploader fieldset { 
+	position: relative; 
+	margin-top:1em;  
+}
+/* IE6 FIX */
+html #uploader legend { 
+	position:absolute; 
+	top: -0.5em; 
+	left: .5em; 
+}
+
+#uploader fieldset.flash {
+	width: 375px;
+	margin: 10px 5px;
+	border-color: #D9E4FF;
+}
+
+#uploader legend {
+	font: 700 14px Arial, Helvetica, sans-serif;
+	padding: 0 5px;
+	margin: 0 10px;
+	color: #73b304;
+}
+
+#uploader button,
+#uploader input,
+#uploader select,
+#uploader textarea { 
+	border-width: 1px; 
+	margin-bottom: 10px;
+	padding: 2px 3px;
+}
+
+
+
+#uploader input[disabled]{ border: 1px solid #ccc } /* FF 2 Fix */
+
+
+#uploader label { 
+	width: 150px; 
+	text-align: right; 
+	display:block;
+	margin-right: 5px;
+}
+
+#uploader #btnSubmit { margin: 0 0 0 155px ; }
+
+/* -- Table Styles ------------------------------- */
+#uploader td {
+	font: 10pt Helvetica, Arial, sans-serif;
+	vertical-align: top;
+}
+
+#uploader .progressWrapper {
+	width: 357px;
+	overflow: hidden;
+}
+
+#uploader .progressContainer {
+	margin: 5px;
+	padding: 4px;
+	border: solid 1px #E8E8E8;
+	background-color: #F7F7F7;
+	overflow: hidden;
+	background-color: #D6DDE5;
+	border: 3px #06C solid;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	filter: alpha(opacity=50);
+	-moz-opacity: 0.5;
+	opacity: 0.5;
+}
+/* Message */
+#uploader .message {
+	margin: 1em 0;
+	padding: 10px 20px;
+	border: solid 1px #FFDD99;
+	background-color: #FFFFCC;
+	overflow: hidden;
+}
+/* Error */
+#uploader .red {
+	border: solid 1px #B50000;
+	background-color: #FFEBEB;
+}
+
+/* Current */
+#uploader .green {
+	border: solid 1px #DDF0DD;
+	background-color: #EBFFEB;
+}
+
+/* Complete */
+#uploader .blue {
+	border: solid 1px #CEE2F2;
+	background-color: #F0F5FF;
+}
+
+#uploader .progressName {
+	font-size: 8pt;
+	font-weight: 700;
+	color: #555;
+	width: 323px;
+	height: 14px;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+#uploader .progressBarInProgress,
+#uploader .progressBarComplete,
+#uploader .progressBarError {
+	width: 0%;
+	font-size: 0;
+	background-color: blue;
+	margin-top: 2px;
+	height: 10px;
+	margin-top: 10px;
+	margin-left: 20px;
+	margin-right: 20px;
+	padding: 1px;
+	background-color: #D6DDE5;
+	border: 1px solid #D6DDE5;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+}
+
+#uploader .progressBarComplete {
+	width: 100%;
+	background-color: green;
+	visibility: hidden;
+}
+
+#uploader .progressBarError {
+	width: 100%;
+	background-color: red;
+	visibility: hidden;
+}
+
+#uploader .progressBarStatus {
+	margin-top: 2px;
+	width: 337px;
+	font-size: 7pt;
+	font-family: Arial;
+	text-align: left;
+	white-space: nowrap;
+}
+
+#uploader a.progressCancel {
+	font-size: 0;
+	display: block;
+	height: 14px;
+	width: 14px;
+	background-image: url(/assets/uploader/images/cancelbutton.gif);
+	background-repeat: no-repeat;
+	background-position: -14px 0px;
+	float: right;
+}
+
+#uploader a.progressCancel:hover {
+	background-position: 0px 0px;
+}

@@ -1,0 +1,36 @@
+ol.results-listing
+{
+	margin: 0 0 75px 0;
+	padding: 0;
+	display: block;
+}
+
+		ol.results-listing li
+		{
+			display: block;
+			margin: 0;
+			padding: 0;
+		}
+		
+				ol.results-listing li.striped
+				{
+					background-color: #E5ECF2 !important;
+				}
+				
+		
+		ol.results-listing li.Hide h3 { color: #C90; }
+		
+		ol.results-listing li.Deleted h3
+		{
+			color: #8E0003;
+			text-decoration: line-through;
+		}
+		
+		ol.results-listing li span.display_status { font-size: 60%; }
+		
+		ol.results-listing li.Hide, ol.results-listing li.Deleted
+		{
+			filter: alpha(opacity=50);
+			-moz-opacity: 0.5;
+			opacity: 0.5;
+		}

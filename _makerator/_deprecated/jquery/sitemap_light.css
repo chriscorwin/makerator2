@@ -1,0 +1,85 @@
+#sitemap ul
+{
+	padding-top: 0em;
+}
+
+#sitemap ul
+{
+	background: url('/_Makerator/images/folder.gif');
+	background-repeat: no-repeat;
+}
+
+
+#sitemap li
+{
+
+	clear: both;
+	border: 1px solid #ccc;
+	margin: 1px;
+	padding: 0 0 0 2.3em;
+	list-style: none;
+}
+
+
+#sitemap li+li
+{
+	background: url('/_Makerator/images/file.gif');
+	background-repeat: no-repeat;
+}
+
+
+#sitemap li:before
+{
+	content: " ";
+}
+
+
+div.wrap {
+	border:1px solid #BBBBBB;
+	padding: 1em 1em 1em 1em;
+}
+
+.page-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: block;
+}
+
+.clear-element {
+	clear: both;
+}
+
+.page-item1 > div,
+.page-item2 > div,
+.page-item3 > div,
+.page-item4 > div {
+	background: #f8f8f8;
+	margin: 0.25em 0 0 0;
+}
+
+.left {
+	text-align: left;
+}
+
+.right {
+	text-align: right;
+}
+
+.sort-handle {
+	cursor:move;
+}
+
+.helper {
+border:2px dashed #777777;
+}
+
+.current-nesting {
+	background-color: yellow;
+}
+
+.bold {
+	color: red;
+	font-weight: bold;
+}
+

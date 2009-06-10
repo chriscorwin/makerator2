@@ -1,0 +1,215 @@
+form, fieldset, legend, label, input, select, button, br { line-height: 18px; }
+
+
+form fieldset
+{
+	background-color: none;
+	position: relative;
+	display: block;
+	margin: 0 0 1em 0;
+	padding: 0 !important;
+	border-color: #FFF;
+}
+
+form div.form-field
+{
+	background-color: none;
+	position: relative;
+	display: block;
+	margin: 0 0 1em 0;
+	padding: 0 !important;
+	border-color: #FFF;
+}
+
+form fieldset legend
+{
+	background-color: #EDEDED;
+	color: #000;
+	float: left;
+	clear: both;
+	width: 94%;
+	font-weight: bold;
+	font-size: 1.5em;
+	margin: 0 0 1em 0;
+	padding: .3em 0 .5em .3em;
+}
+
+form fieldset legend:after
+{
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+form { display: block; }
+form fieldset legend img { padding: 0px; }
+
+
+form fieldset legend+label
+{
+	margin-top: -.05em !important;
+}
+
+label
+{
+	border-bottom: 1px solid #CCC;
+	min-height: 1.95em;
+	height: auto !important;
+	display: block;
+	float: left;
+	clear: both;
+	width: 30%;
+	text-align: right;
+	padding-right: 1em !important;
+	padding-top: .45em !important;
+	margin-bottom: .2em !important;
+	font-weight: bolder;
+	color: #333;
+	cursor: pointer;
+}
+
+
+fieldset.listerator-form-buttons
+{
+	margin-top: .75em;
+	padding-left: 33% !important;
+}
+
+input, select, textarea, select option
+{
+	min-height: 2.21em;
+	height: auto !important;
+	text-align: top;
+	background: none;
+	display: block;
+	width: 65.5%;
+	float: right;
+	margin-bottom: .75em;
+	padding-left: .65em !important;
+}
+
+
+textarea
+{
+	height: auto;
+	padding-top: .5em !important;
+}
+
+select 
+{
+	height: 17px;
+	line-height: 8px;
+	cursor: pointer;
+}
+
+input:focus,
+select:focus,
+input:focus:hover,
+label:active,
+label:focus,
+label:focus:hover,
+textarea:focus,
+textarea:focus:hover
+{
+	border: 1px solid #ECA917 !important;
+	color: #363636;
+	outline: none !important;
+	background-color: #FFF4C6 !important;
+	
+}
+
+/*
+input:hover, label:hover, textarea:hover
+{
+	color: #00557D;
+	background-image: none;
+	border: #316ac5 1px solid;
+	background-color: #dff1ff;
+	outline: none;
+}
+
+label:hover
+{
+	cursor: pointer;
+}
+
+input:focus, select:focus, input:focus:hover, label:active, label:focus, label:focus:hover, textarea:focus, textarea:focus:hover
+{
+	color: #000;
+	border: 1px #F4D60D solid;
+	background-color: #FEFAC9;
+	outline: none !important;
+}
+*/
+
+/*
+button, .button
+{
+	background-color: #06F;
+	font-family: trebuchet, "trebuchet ms";
+	display: block;
+	height: 36px;
+	background-image: url('forms_bg.gif');
+	background-repeat: repeat-x;
+	border-color: #ccc;
+	border-width: 1px;
+	border-style: outset;
+	color: #000;
+}
+
+.button:hover
+{
+	color: #00557D;
+	background-image: none;
+	border: #316ac5 1px solid;
+	background-color: #dff1ff;
+	cursor: pointer;
+}
+*/
+
+.radios input, .checkboxen input 
+
+{
+	line-height: 18px;
+	text-align: left;
+	height: 18px;
+	float: left !important;
+	display: block;
+	clear: none !important;
+	margin: 0px 0px 0px 6px  !important;
+	padding: auto !important;
+	border: #316ac5 1px solid;
+	width: 18px;
+}
+
+.checkboxen label, .checkboxen label:hover
+{
+	line-height: 18px;
+	text-align: left;
+	height: auto;
+	float: left !important;
+	display: block;
+	clear: right !important;
+	margin: -18px 0px 0px 30px !important;
+	border: 1px solid #fff;
+	width: 90%;
+	padding: 0 6px;
+	background-color: none;
+	overflow: hidden;
+}
+
+.checkboxen label:hover
+{
+	color: #00557D;
+	background-image: none;
+	border: #316ac5 1px solid;
+	background-color: #dff1ff;
+	overflow: visible;
+}
+
+.checkboxen label+input
+{
+	margin-top: -0px !important;
+}

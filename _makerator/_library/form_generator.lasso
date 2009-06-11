@@ -58,11 +58,10 @@
 			else;
 				var('a_value' = $a_default);
 			/if;
-			var(
-				'rowClass' = 'form-field '
-			,	'inputClass' = 'ui-helper-reset ui-clickable ui-widget-content ui-corner-right '
-			,	'labelClass' = 'ui-helper-reset ui-widget-header ui-clickable ui-corner-left '
-			);
+			iterate($makerator_adminFormClasses, local('a_pair'));
+					var(#a_pair->first + 'ClassLeading' = '');
+					var(#a_pair->first + 'Class' = #a_pair->second);
+			/iterate;
 			select(true);
 					case($a_map->find('Type')->beginswith('VarChar'));
 							var('type'					=	$a_map->find('Type'));

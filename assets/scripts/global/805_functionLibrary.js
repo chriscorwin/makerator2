@@ -422,6 +422,7 @@ $().ajaxComplete(function(ev, xhr, s) {
 function primaryContentShow() {
 	$('#primaryContent').effect('slide', { direction: 'right', mode: 'show' }, 125);
 	loadingIndicatorHide('#primaryContentWrapper');
+	$.scrollTo({top: 0, left: 0}, 400);
 }
 
 

@@ -84,6 +84,9 @@
 														)
 	,	'makerator_adminFormClasses'					=	map(
 															'form' = ''
+														,	'listeratorForm' = ''
+														,	'uploadForm' = ''
+														,	'simpleForm' = ''
 														,	'fieldset' = ' ui-helper-reset ui-corner-all '
 														,	'row' = ' form-field '
 														,	'label' = ' ui-helper-reset ui-widget-header ui-clickable ui-corner-left '

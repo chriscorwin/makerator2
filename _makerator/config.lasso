@@ -85,9 +85,9 @@
 	,	'makerator_adminFormClasses'					=	map(
 															'form' = ''
 														,	'fieldset' = ' ui-helper-reset ui-corner-all '
-														,	'rowClass' = ' form-field '
-														,	'labelClass' = ' ui-helper-reset ui-widget-header ui-clickable ui-corner-left '
-														,	'inputClass' = ' ui-helper-reset ui-clickable ui-widget-content ui-corner-right '
+														,	'row' = ' form-field '
+														,	'label' = ' ui-helper-reset ui-widget-header ui-clickable ui-corner-left '
+														,	'input' = ' ui-helper-reset ui-clickable ui-widget-content ui-corner-right '
 														)
 	,	'makerator_errorStack'							=	array
 	,	'makerator_defaultUiThemeName'					=	'makeratordotcom'

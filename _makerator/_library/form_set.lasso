@@ -47,12 +47,11 @@
 			/value_list;
 	/inline;
 	
+	$size >= 1 ? $inputClass += ' multiple ';
 	
-	
-	local('fieldsetClass' = ' varchar ui-helper-reset ui-corner-all ');
 	local('errorWarning' = string);
-	var($listeratorAction + '_missing')->find($a_column_decrypted)->size > 0 || var($listeratorAction + '_invalid')->find($a_column_decrypted)->size > 0 ?  #fieldsetClass += ' error ui-state-error ';
-	var($listeratorAction + '_required')->find($a_column)->size ? #fieldsetClass += ' required ' | #fieldsetClass += ' optional ';
+	var($listeratorAction + '_missing')->find($a_column_decrypted)->size > 0 || var($listeratorAction + '_invalid')->find($a_column_decrypted)->size > 0 ?  $rowClass += ' error ui-state-error ';
+	var($listeratorAction + '_required')->find($a_column)->size ? $rowClass += ' required ' | $rowClass += ' optional ';
 	
 	
 	if(var($listeratorAction + '_missing')->find($a_column_decrypted)->size > 0  );
@@ -78,9 +77,9 @@
 	
 	local('a_desc' = $a_description != '' ? '<div class="description">' + $a_description + '</div>' | '');
 	$content_primary += ('
-		<fieldset class="' + #fieldsetClass + '">
+		<row class="' + $rowClass + '">
 			<label
-				class="ui-helper-reset ui-widget-header ui-clickable ui-corner-left"
+				class="' + $labelClass + '"
 				for="' +  $a_column + '"
 			>
 				' + $field_label + '
@@ -89,7 +88,7 @@
 			</label>
 			<select 
 				id="' + $a_column + '" 
-				class="ui-helper-reset ui-clickable ui-widget-content ui-corner-right"
+				class="' + $inputClass + '"
 				name="' + $a_column + '" 
 				size="' $size '" 
 			>
@@ -102,7 +101,7 @@
 					' + #content_valueList + '
 			</select>
 			' + #errorWarning + #a_desc + '
-		</fieldset>
+		</row>
 	');
 	
 	/protect;

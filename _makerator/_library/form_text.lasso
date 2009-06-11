@@ -26,10 +26,9 @@
 	/if;
 	
 	
-	local('fieldsetClass' = ' text ui-helper-reset ui-corner-all ');
 	local('errorWarning' = string);
-	var($listeratorAction + '_missing')->find($a_column_decrypted)->size > 0 || var($listeratorAction + '_invalid')->find($a_column_decrypted)->size > 0 ?  #fieldsetClass += ' error ui-state-error ';
-	var($listeratorAction + '_required')->find($a_column)->size ? #fieldsetClass += ' required ' | #fieldsetClass += ' optional ';
+	var($listeratorAction + '_missing')->find($a_column_decrypted)->size > 0 || var($listeratorAction + '_invalid')->find($a_column_decrypted)->size > 0 ?  $rowClass += ' error ui-state-error ';
+	var($listeratorAction + '_required')->find($a_column)->size ? $rowClass += ' required ' | $rowClass += ' optional ';
 	
 	
 	if(var($listeratorAction + '_missing')->find($a_column_decrypted)->size > 0  );
@@ -77,7 +76,7 @@
 	#a_value->size ? #numberOfRows = #a_value->split('\r')->size + #numberOfRows;
 	
 /* 	$content_primary += (' */
-/* 		<fieldset class="' + #fieldsetClass + '"> */
+/* 		<fieldset class="' + $rowClass + '"> */
 /* 			<label */
 /* 				class="ui-helper-reset ui-widget-header ui-clickable ui-corner-left" */
 /* 				for="' +  $a_column + '" */
@@ -90,22 +89,22 @@
 /* 		</fieldset> */
 /* 	'); */
 	$content_primary += ('
-		<fieldset class="' + #fieldsetClass + '">
+		<div class="' + $rowClass + '">
 			<label
-				class="ui-helper-reset ui-widget-header ui-clickable ui-corner-left"
+				class="' + $labelClass + '"
 				for="' +  $a_column + '"
 			>
 				' + $field_label + '
 			</label>
 			<textarea 
-				class="ui-helper-reset ui-clickable ui-widget-content ui-corner-right"
+				class="' + $inputClass + '"
 				type="text" 
 				name="' + $a_column + '" 
 				rows="' + #numberOfRows + '"
 				cols="' + #numberOfCols + '"
 				id="' + $a_column + '">'  + #a_value + '</textarea>
 			' + #errorWarning + #a_desc + '
-		</fieldset>
+		</div>
 	');
 
 	/protect;

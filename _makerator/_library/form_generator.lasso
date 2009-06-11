@@ -26,6 +26,11 @@
 	);
 	// see "date" field below...
 	iterate($formFields, var('a_map'));
+			iterate($makerator_adminFormClasses, local('a_pair'));
+					var(#a_pair->first + 'ClassLeading' = '');
+					var(#a_pair->first + 'Class' = #a_pair->second);
+// 					makerator_content_debug(-body=var(#a_pair->first + 'Class'));
+			/iterate;
 			var('a_column'='');
 			$tabindex += 1;
 			var(
@@ -50,7 +55,6 @@
 			var('a_description'=$a_map->find('description'));
 			var('fieldlabel'=$a_map->find('label'));
 			var('requiredornot'=$a_map->find('required'));
-			var('inputClassLeading' = '');
 			if(variable_defined($a_column) && var($a_column) == '');
 				var('a_value' = $a_default);
 			else(variable_defined($a_column));
@@ -58,10 +62,6 @@
 			else;
 				var('a_value' = $a_default);
 			/if;
-			iterate($makerator_adminFormClasses, local('a_pair'));
-					var(#a_pair->first + 'ClassLeading' = '');
-					var(#a_pair->first + 'Class' = #a_pair->second);
-			/iterate;
 			select(true);
 					case($a_map->find('Type')->beginswith('VarChar'));
 							var('type'					=	$a_map->find('Type'));

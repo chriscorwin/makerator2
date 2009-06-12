@@ -9,17 +9,14 @@
 	
 	
 	if(string(response_filepath)->equals('/reload_tags/') && boolean(client_param('reloadtags')));
-			library_once('/_makerator/config.lasso');
-			$makerator_includes->insert('url_handler');
-			$makerator_includes->insert(include_currentPath);
-			library_once('/_site/config.lasso');
-			library_once('/_makerator/_library/sessions.lasso');
-			library_once('/_makerator/_library/cookie_killer.lasso');
-			library_once('/_makerator/_library/sessions.lasso');
+			library('/_makerator/config.lasso');
+			library('/_site/config.lasso');
+			library('/_makerator/_library/sessions.lasso');
+			library('/_makerator/_library/cookie_killer.lasso');
+			library('/_makerator/_library/sessions.lasso');
 			tags_load('/_makerator/_tags/', -refresh=boolean(client_param('reloadtags')));
-			redirect_url('/account/sign_out/#/tags_reloaded/');
+			redirect_url('/#/tags_reloaded/');
 	/if;
-	
 	
 	library_once('/_makerator/config.lasso');
 	$makerator_includes->insert('url_handler');
@@ -37,71 +34,175 @@
 			$makerator_includes->remove;
 	/handle;
 	
-	define_tag(
-		'makerator_errorManager'
-	,	-required='fileThatErrored'
-	,	-required='errorCode'
-	,	-required='errorMessage'
-	,	-optional='actionStatement'
-	,	-optional='params1'
-	,	-optional='params2'
-	);
-// 			error_push;
-			handle_error;
-					log('/_logs/errors_hub.txt');
-							'HUB: =========================================' + '\r\n';
-							response_filepath + '\r\n';
-							date + '\r\n';
-							'client_params: ' + client_params + '\r\n';
-							'makerator_currentInclude: ' + $makerator_currentInclude + '\r\n';
-							'makerator_currentIncludeParent: ' + $makerator_currentIncludeParent + '\r\n';
-							'error_msg: ' + string(error_msg) + '\r\n';
-							'-----------------------------------------' + '\r\n';
-					/log;
-// 					error_reset;
-			/handle_error;
-			local('errorMap' = map(
-				'include_currentPath' = #fileThatErrored
-			,	'error_code' = #errorCode
-			,	'error_msg' = #errorMessage
-			));
+	handle_error;
+			// copy error message and code in case they get reset
+			var(
+				'msg' = error_msg,
+				'code' = error_code
+			);
+		
+			// do everything within a protect block to avoid unwanted recursion	
+			protect;
+					handle_error;
+						var('desc') = ('HUB: handle_error\'s handle_error: [' + client_url + ']' + ' (' + response_filepath + ')' + ' ' + error_msg + ': ' + error_code);
+						log_critical($desc);
+						content_body = $desc;
+					/handle_error;
+					
+					!var_defined('msg') ? var('msg' = string);
+					if($msg->contains('No tag, type or constant was defined') && !($msg->contains('null->join')));
+							log_critical('ERROR! (hub) "constant" (' + (request_isAjax ? 'AJAX' | 'Regular') + ' : ' + response_filepath + '):');
+							var('desc') = ('HUB: handle_Error: [' + client_url + ']' + ' (' + response_filepath + ')' + ' ' + $code + ': ' + $msg);	
+							log_critical($desc);
+							log_critical('Reloading tags...');
+							tags_load('/_makerator/_tags/', -refresh=true);
+					/if;
+					
+					if($code);
+							var('desc') = ('HUB: handle_Error: [' + client_url + ']' + ' (' + response_filepath + ')' + ' ' + $code + ': ' + $msg);	
+							log_critical($desc);
+					/if;
+					
+					if(!request_isAjax);
+'
+<!DOCTYPE html >
+<html>
+	<head>
+		<meta http-equiv="Content-Language" content="en">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>500 Internal Server Error</title> 
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/global/000_tripoli-combo.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/global/100_blueprint-css-screen-modified.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/global/204_jquery.jgrowl-1.2.0.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/global/205_jgrowl.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/global/205_superfish.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/global/207_superfish-navbar.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/global/700_navbarTopSkin.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/global/800_application.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/modules/buttons/buttons.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/modules/forms/forms.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/modules/listerators/listerators.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/themes/makeratordotcom/jquery-ui-1.7.1.custom-additions.css">
+		<link rel="stylesheet" type="text/css" href="/assets/makerator_admin/css/themes/makeratordotcom/jquery-ui-1.7.1.custom.css">
+	</head>
+	
+	<body class="error" >
+		<div id="container" class="container content">
+			<div id="header" class="column span-16 first last">
+				<a href="/" id="masthead" title=" #{pageTitle}# " class="loader"><strong>Error</strong></a>
+			</div>
 			
 			
-			!var_defined('makerator_errorStack') ? var('makerator_errorStack' = array);
-			!var_defined('listeratorAction') ? var('listeratorAction' = '');
-			!var_defined('listeratorNoun') ? var('' = 'listeratorNoun');
-			!var_defined('listeratorVerb') ? var('' = 'listeratorVerb');
-			!var_defined('json_data') ? var('json_data' = map);
-			!var_defined('content_pageTitle') ? var('content_pageTitle' = '');
-			!var_defined('content_error') ? var('content_error' = '');
-			!var_defined($listeratorAction + '_pathto') ? var(($listeratorAction + '_pathto') = '');
-			params->size >= 4 ? #errorMap->insert('action_statement' = params->get(4));
-			params->size >= 5 ? #errorMap->insert('params' = params->get(5));
-			params->size >= 6 ? #errorMap->insert('params_up' = params->get(6));
-			$makerator_errorStack->insert(#errorMap);
-			var($listeratorAction + '_exitTo') = (var($listeratorAction + '_pathto') + ($listeratorNoun->size ? $listeratorNoun + '/' | '') + ($listeratorVerb->size ? $listeratorVerb + '/' | ''));
-			$json_data->insert('listeratorExitTo' = var($listeratorAction + '_exitTo'));
-			$content_pageTitle = 'Error: ' + $content_pageTitle;
-			$content_error += ('
-				<div class="ui-widget">
-					<div class="ui-state-error ui-corner-all">
-						<p>
-							<span class="ui-icon ui-icon-alert ui-icon-left">
-								<strong class="ui-helper-hidden-accessible"></strong>
-							</span>
-							<strong>Error!</strong> 
-							There has been an error: ' + #errorMessage + '
-						</p>
+			
+			<div id="primary" class="column span-16 first last">
+				<div id="primaryContentWrapper"  class="content loader">
+					<div class="ui-widget">
+						<div class="ui-widget-header ui-corner-top"">
+								<h1>500 Internal Server Error</h1>
+						</div>
+						<div class="ui-widget-content ui-corner-bottom">
+							<p>
+								An error has occurred. The error has been logged and the system administrator has been notified.
+							</p>
+							<p>
+								You may go back and try again now, or, if the error persists, try again later. We apologize for
+								the inconvenience.
+							</p>
+						</div>
+					</div>
+					<div id="errorContent" class="content loader ui-layout-content">
+						<div class="ui-widget">
+							<div class="ui-state-error ui-corner-all">
+								<p class=""><strong>Error reported by:</strong> error.lasso</p>
+							</div>
+						</div>
+						<div class="ui-widget">
+							<div class="ui-widget-header ui-corner-top">
+								<h3>Error Information</h3>
+							</div>
+							<div class="ui-widget-content ui-corner-bottom">
+								<p><strong>Error Code:</strong> ' + $code + '</p>
+								<pre>' + $msg + '</pre>
+							</div>
+						</div>
+					</div>
+					<div id="debugContent" class="content loader ui-layout-content">
 					</div>
 				</div>
-			');
-// 			error_pop;
-// 			error_reset;
-	/define_tag;
-	
-	handle_error;
-		makerator_errorManager($makerator_currentInclude, error_code, error_msg);
+			</div>
+			
+			<div id="footer" class="column span-16 first last">
+				<div class="content loader ui-widget">
+					<div class="ui-state-error ui-corner-all">
+						<p><strong>Server Info:</strong> ' + server_name + ' running on ' + lasso_version + '</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+';
+					else;
+							!local_defined('json_return') ? local('json_return' = map);
+							local('accept_header' = request_params->find('Accept'));
+							if($code);
+								// log error to error database
+								var('desc') = ('Handled! [' + client_url + '] ' + $code + ': ' + $msg);
+								log_critical($desc);
+							/if;
+							!local_defined('json_return') ? local('json_return') = map;
+							#json_return->insert('error_msg' = error_msg);
+							#json_return->insert('error_code' = error_code);
+							#json_return->insert('response_filepath' = response_filepath);
+							#json_return->insert('key' = response_filepath->split('/')->get(2));
+							#json_return->insert('content_data' = '');
+							#json_return->insert('content_pageTitle' = $content_pageTitle + ' - ' + $content_siteTitle);
+							#json_return->insert(pair('content_primary' = lp_string_trimHTML(-html=@$content_primary)));
+							#json_return->insert(pair('content_error' = lp_string_trimHTML(-html=@$content_error)));
+							#json_return->insert(pair('content_debug' = lp_string_trimHTML(-html=@$content_debug)));
+							#json_return->insert('scripts' = '');
+							#json_return->insert('request_type' = 'AJAX - Error');
+							#json_return->insert('accept_header' = request_params->find('Accept'));
+							iterate($json_data, local('a_data'));
+									if (#a_data->second->type == array);
+											local('out' = array);
+											iterate(#a_data->second, local('a_member'));
+													#out->insert(encode_html(#a_member));
+											/iterate;
+											#json_return->insert(#a_data->first=#out);
+									else;
+											#json_return->insert(pair(#a_data->first = #a_data->second));
+									/if;
+							/iterate;
+							#json_return->insert(pair('errorStack' = $makerator_errorStack));
+							local('scripts_out') = string;
+							iterate($json_scripts, local('a_script'));
+									#scripts_out += #a_script + '\n';
+							/iterate;
+							#json_return->insert(pair('scripts'=#scripts_out));
+							
+							
+							local('token' = string);
+							iterate(#json_return, local('i'));
+								#token += string(#i);
+							/iterate;
+							
+							local('makerator_responseUID' = encrypt_hmac(
+								-token=#token
+							,	-password=server_name
+							,	-digest='md5'
+							,	-cram
+							));
+							#json_return->insert('makerator_responseUID' = #makerator_responseUID);
+							
+							
+							content_type('application/json');
+							content_body = encode_json(#json_return);
+							content_body;
+					/if;
+			/protect;
 	/handle_error;
+	
 	
 	
 	protect;
@@ -123,6 +224,9 @@
 						</div>
 					');
 					$content_error += #thisError;
+// 					makerator_errorManager($makerator_currentInclude, error_code, error_msg);
+					var('desc') = ('hub asset_manager handle_error: [' + client_url + ']' + ' (' + response_filepath + ')' + ' ' + error_msg + ': ' + error_code);	
+					log_critical($desc);
 			/handle_error;
 			
 			
@@ -139,11 +243,9 @@
 	
 	
 	var('levels' = response_path->split('/')->removeall('')&);
-	/* each of the directories along the way is a "level" in our URI */
 	if($levels->size);
 			($levels->get(1)) != 'Home' ? $levels->insert('Home', 1);
 	else;
-			/* if we're at home the array is empty, so we insert "home" into it */
 			$levels = array('Home');
 	/if;
 	!var_defined('makerator_listerators') ? var('makerator_listerators'	=	set);
@@ -160,7 +262,6 @@
 					/if;
 			/rows;
 	/inline;
-	
 	
 	
 	var('content_pageTitle' = ($levels->join(' &#x3E; ')));
@@ -313,6 +414,9 @@
 					</div>
 				</div>
 			');
+
+
+
 /* 			if(!(response_path)->beginswith($makerator_pathToAdmin)); */
 /* 					$content_debug += include('/_makerator/_Library/page_create_form.lasso'); */
 /* 			/if; */
@@ -403,6 +507,8 @@
 /* 				$content_siteAdminToolbar += '<div id="admincontent">'; */
 /* 				$content_siteAdminToolbar += include('/_makerator/_Library/admin_links.lasso'); */
 /* 				($show_page_create == false) ? $content_siteAdminToolbar += include('/_makerator/_Library/admin_toggle_page_visibility.lasso'); */
+
+
 	else(file_exists('/_site/pages/'+((((response_filepath)->replace('/','__')&)->removeleading('__')&)->removeTrailing('__')&)+'.lasso'));
 			$content_primary+=include_once('/_site/pages/'+((((response_filepath)->replace('/','__')&)->removeleading('__')&)->removeTrailing('__')&)+'.lasso');
 	else;
@@ -485,9 +591,6 @@
 									</div>
 								</div>
 							');
-/* 							if(!(response_path)->beginswith($makerator_pathToAdmin)); */
-/* 									$content_debug += include('/_makerator/_Library/page_create_form.lasso'); */
-/* 							/if; */
 						/if;
 				else;
 						// this page does not exist
@@ -504,9 +607,6 @@
 								</div>
 							</div>
 						');
-/* 						if($show_content_siteAdmin); */
-/* 								$content_debug += include('/_makerator/_library/page_create_form.lasso'); */
-/* 						/if; */
 				/if;
 			/inline;
 	/if;
@@ -610,9 +710,6 @@
 									/if;
 							/iterate;
 							
-/* 							#json_return->insert(pair('content_primary' = lp_string_trimHTML(-html=@$content_primary))); */
-/* 							#json_return->insert(pair('content_error' = lp_string_trimHTML(-html=@$content_error))); */
-/* 							#json_return->insert(pair('content_debug' = lp_string_trimHTML(-html=@$content_debug))); */
 							#json_return->insert(pair('content_primary' = $content_primary));
 							#json_return->insert(pair('content_error' = $content_error));
 							#json_return->insert(pair('content_debug' = $content_debug));
@@ -820,5 +917,4 @@
 					content_body;
 			/inline;
 	/if;
-/* 	error_pop; */
 ]

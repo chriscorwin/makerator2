@@ -7,61 +7,80 @@
 	/handle;
 	
 	
+	handle_error;
+			makerator_errorManager(
+				$makerator_currentInclude
+			,	error_code
+			,	error_msg
+			);
+	/handle_error;
+	
+	
+	library_once('/_makerator/_library/form_generator_config.lasso');
+	
 	$content_primary += ('
 		<form 
 			id="listeratorForm" 
-			class="listerator-form listerator-form-' + $listeratorVerb + ' listerator-form-' + $listeratorContentType + ' ui-widget"
+			class="' + $makerator_admin_formClasses->find('listerator')->join(' ') + ' listerator-form listerator-form-' + $listeratorVerb + ' listerator-form-' + $listeratorContentType + ' "
 			action="' + var($listeratorAction + '_pathto') + ($listeratorNoun->size ? $listeratorNoun + '/' | '') + $listeratorVerb + '/do/' + '" 
 			name="' + $these + $listeratorNoun + $listeratorVerb + '" 
 			method="post" 
 		>
 	');
 	
-	$json_data->insert('listeratorNoun'	=	$listeratorNoun);
-	$json_data->insert('listeratorVerb'	=	$listeratorVerb);
+	$json_data->insert('listeratorNoun'=$listeratorNoun);
+	$json_data->insert('listeratorVerb'=$listeratorVerb);
+	
 	var(
 		'tabindex'								=	0
-	,	'calendarindex'							=	0
 	,	'date_today'							=	date->format('%Q')
 	);
-	// see "date" field below...
 	iterate($formFields, var('a_map'));
-			iterate($makerator_adminFormClasses, local('a_pair'));
-					var(#a_pair->first + 'ClassLeading' = '');
-					var(#a_pair->first + 'Class' = #a_pair->second);
-// 					makerator_content_debug(-body=var(#a_pair->first + 'Class'));
+			
+			
+			iterate($makerator_admin_formElements->keys, local('formElement'));
+					var(#formElement + '_classes' = ($makerator_admin_formElements->find(#formElement))->second);
 			/iterate;
+			
+			
 			var('a_column'='');
+			
 			$tabindex += 1;
+			
 			var(
-				'fieldtype'						=	$a_map->find('type')
-			,	'a_column'						=	$a_map->find('field')
-			,	'a_column_decrypted'				=	$a_map->find('field')
-			,	'field_label'					=	$a_map->find('field')
-			//,	'a_column'						=	encrypt_blowfish2($a_map->find('field'), -seed='makerator')
+				'fieldtype'								=	$a_map->find('type')
+			,	'a_column'								=	$a_map->find('field')
+			,	'a_column_decrypted'						=	$a_map->find('field')
+			,	'field_label'							=	$a_map->find('field')
+			,	'a_onclick'								=	$a_map->find('onclick')
+			,	'a_onchange'							=	$a_map->find('onchange')
+			,	'a_onfocus'								=	$a_map->find('onfocus')
+			,	'a_onblur'								=	$a_map->find('onblur')
+			,	'a_default'								=	$a_map->find('default')
+			,	'a_onsubmit'							=	$a_map->find('onsubmit')
+			,	'table'									=	$a_map->find('table')
+			,	'options'								=	$a_map->find('options')
+			,	'a_description'							=	$a_map->find('description')
+			,	'fieldlabel'							=	$a_map->find('label')
+			,	'requiredornot'							=	$a_map->find('required')
 			);
+			
 			$field_label->replace('_and_', '&nbsp&amp;&nbsp;');
 			$field_label->replace('~', '&rsquo;');
 			$field_label->replace('__', ' / ');
 			$field_label->replace('_', ' ');
-			var('a_onclick'=$a_map->find('onclick'));
-			var('a_onchange'=$a_map->find('onchange'));
-			var('a_onfocus'=$a_map->find('onfocus'));
-			var('a_onblur'=$a_map->find('onblur'));
-			var('a_default'=$a_map->find('default'));
-			var('a_onsubmit'=$a_map->find('onsubmit'));
-			var('table'=$a_map->find('table'));
-			var('options'=$a_map->find('options'));
-			var('a_description'=$a_map->find('description'));
-			var('fieldlabel'=$a_map->find('label'));
-			var('requiredornot'=$a_map->find('required'));
+			
+			
 			if(variable_defined($a_column) && var($a_column) == '');
-				var('a_value' = $a_default);
+					var('a_value' = $a_default);
 			else(variable_defined($a_column));
-				var('a_value' = var($a_column));
+					var('a_value' = var($a_column));
 			else;
-				var('a_value' = $a_default);
+					var('a_value' = $a_default);
 			/if;
+			
+			
+			
 			select(true);
 					case($a_map->find('Type')->beginswith('VarChar'));
 							var('type'					=	$a_map->find('Type'));
@@ -69,77 +88,77 @@
 							var('size')					=	$type->split('(')->get(2)->removetrailing(')') & ;
 							var('type')					=	$type->split('(')->get(1)->removetrailing('(') & ;
 							var('options'				=	$a_map->find('Type'));
-							$rowClass += 'varchar ';
 					case($a_map->find('Type')->beginswith('set'));
 							var('type'					=	$a_map->find('Type'));
 							var('options'				=	$a_map->find('Type'));
 							$options						=	$options->substring(5, $options->length - 5)->split(',');
 							var('size')					=	$type->split('(')->get(2)->removetrailing(')') & ;
 							var('type')					=	$type->split('(')->get(1)->removetrailing('(') & ;
-							$rowClass += 'set ';
 					case($a_map->find('Type')->beginswith('enum'));
 							var('type'					=	$a_map->find('Type'));
 							var('length')				=	$type->split('(')->get(2)->removetrailing(')') & ;
 							var('options'				=	$a_map->find('Type'));
 							$options						=	$options->substring(5, $options->length - 5)->split(',');
-							$rowClass += 'enum ';
 					case($a_map->find('Type')->equals('date'));
 							var('type'					=	$a_map->find('Type'));
 							var('options'				=	$a_map->find('Type'));
 							var('length'				=	'');
 							var('type')					=	$type->split('(')->get(1)->removetrailing('(') & ;
-							$rowClass += 'date ';
 					case($a_map->find('Type')->equals('datetime'));
 							var('length'				=	'');
 							var('type'					=	$a_map->find('Type'));
 							var('type')					=	$type->split('(')->get(1)->removetrailing('(') & ;
 							var('options'				=	$a_map->find('Type'));
-							$rowClass += 'datetime ';
-							$inputClass += 'datetime ';
 					case($a_map->find('Type')->equals('text'));
 							var('length'				=	'');
 							var('type'					=	$a_map->find('Type'));
 							var('type')					=	$type->split('(')->get(1)->removetrailing('(') & ;
 							var('options'				=	$a_map->find('Type'));
-							$rowClass += 'text ';
 			/select;
+			
+			
+			
 			$fieldtype = $type;
 			$a_column == 'UID' && response_path >> 'edit' ? $fieldtype = 'hidden';
 			$a_column == 'UID' && response_path >> 'create' ? loop_continue;
-			$fieldtype->beginsWith('enum') ? $fieldtype = 'enum';
 			
-			$a_column_decrypted == var($listeratorAction + '_titleFieldName') ? $inputClass += 'createKeywordUrlFromTitle ';
+			$fieldtype->beginsWith('enum') ? $fieldtype = 'enum';
 			
 			if($a_default->type != 'null');
 					if($a_default->beginsWith('json(\''));
 							$fieldtype = 'json';
 							$a_value->removeLeading('json(\'')&->removeTrailing('\')');
-							$inputClass += 'combineRelIntoJson ';
 					/if;
 			/if;
 			
 			var('errorWarning' = string);
-			var($listeratorAction + '_missing')->find($a_column_decrypted)->size > 0 || var($listeratorAction + '_invalid')->find($a_column_decrypted)->size > 0 ?  $rowClass += ' error ui-state-error ';
-			var($listeratorAction + '_required')->find($a_column)->size ? $rowClass += ' required ' | $rowClass += ' optional ';
-			var($listeratorAction + '_required')->find($a_column)->size ? $inputClass += ' required ' | $inputClass += ' optional ';
+			var($listeratorAction + '_missing')->find($a_column)->size > 0 || var($listeratorAction + '_invalid')->find($a_column)->size > 0 ?  $section_classes->merge(array('error', 'ui-state-error'));
+			var($listeratorAction + '_missing')->find($a_column)->size > 0 || var($listeratorAction + '_invalid')->find($a_column)->size > 0 ?  $input_classes->merge(array('error', 'ui-state-error'));
+			var($listeratorAction + '_required')->find($a_column)->size ? $section_classes->merge(array('required')) | $section_classes->merge(array('optional'));
+			var($listeratorAction + '_required')->find($a_column)->size ? $input_classes->merge(array('required')) | $input_classes->merge(array('optional'));
 			
 			
-			if(var($listeratorAction + '_missing')->find($a_column_decrypted)->size > 0  );
+			if(var($listeratorAction + '_missing')->find($a_column)->size > 0  );
 					$errorWarning +=  ('
 						<label 
 							for="' +  $a_column + '"
-							class="ui-helper-reset ui-helper-clearfix ui-clickable ui-widget-content ui-corner-all ui-state-highlight ui-state-missing"
+							class=" ' + $label_classes->join(' ') + ' ui-state-highlight ui-state-missing"
 						>
 								<p>This field is required.</p>
 						</label>
 					');
 					$a_value = '';
-			else(var($listeratorAction + '_invalid')->find($a_column_decrypted)->size > 0);
+			else(var($listeratorAction + '_invalid')->find($a_column)->size > 0);
 					iterate(var($listeratorAction + '_validationwarnings'), var('a_pair'));
-							if($a_pair->first == $a_column_decrypted);
-								$errorWarning += '<label for="' +  $a_column + '" class="ui-helper-reset ui-helper-clearfix ui-clickable ui-widget-content ui-corner-all ui-state-invalid">';
-								$errorWarning += $a_pair->second;
-								$errorWarning += '</label>';
+							if($a_pair->first == $a_column);
+								$errorWarning +=  ('
+									<label 
+										for="' +  $a_column + '"
+										class=" ' + $label_classes->join(' ') + ' ui-state-highlight ui-state-invalid "
+									>
+											<p>' + $a_pair->second + '</p>
+									</label>
+								');
 							/if;
 					/iterate;
 			/if;
@@ -147,43 +166,56 @@
 			
 			
 			$fieldtype != 'hidden' ? $content_primary += ('
-				<fieldset class="ui-helper-reset ui-corner-all">
+				<fieldset class="' + $fieldset_classes->join(' ') + '">
 			');
 			
 			select($fieldtype);
 			case('hidden');
-/* 					library('/_makerator/_library/form_varchar.lasso'); */
+					$input_classes->merge($makerator_admin_formElements->find('input-hidden')->second);
+					library('/_makerator/_library/form_varchar.lasso');
 			case('json');
+					$input_classes->merge($makerator_admin_formElements->find('select')->second);
+					$input_classes->insert('combineRelIntoJson');
 					library('/_makerator/_library/form_json.lasso');
+					
 			case('varchar');
 					if($a_column->endswith('uid'));
-						$inputClass += ' uid ';
+						$input_classes->merge($makerator_admin_formElements->find('input-text')->second);
+						$input_classes->insert('uid');
 						library('/_makerator/_library/form_varcharuid.lasso');
 					else($a_column->equals('Keyword_URL'));
-						$inputClass += ' urlfriendly unique ';
+						$input_classes->merge($makerator_admin_formElements->find('input-text')->second);
+						$input_classes->merge(array('urlfriendly', 'unique'));
 						library('/_makerator/_library/form_varchar_keyword_url.lasso');
 					else;
+						$a_column == var($listeratorAction + '_titleFieldName') ? $input_classes->insert('createKeywordUrlFromTitle');
+						$input_classes->merge($makerator_admin_formElements->find('input-text')->second);
 						library('/_makerator/_library/form_varchar.lasso');
 					/if;
 			case('text');
+					$input_classes->merge($makerator_admin_formElements->find('textarea')->second);
 					if($a_column->endswith('uid'));
-						library('/_makerator/_library/form_textuid.lasso');
+							$input_classes->insert('uid');
+							library('/_makerator/_library/form_textuid.lasso');
 					else;
-						library('/_makerator/_library/form_text.lasso');
+							library('/_makerator/_library/form_text.lasso');
 					/if;
-			case('text');
-					library('/_makerator/_library/form_text.lasso');
 			case('set');
+					$input_classes->merge($makerator_admin_formElements->find('select')->second);
 					var('a_table'=var($listeratorAction + '_table'));
 					library('/_makerator/_library/form_set.lasso');
 			case('enum');
+					$input_classes->merge($makerator_admin_formElements->find('select')->second);
 					var('a_table'=var($listeratorAction + '_table'));
 					library('/_makerator/_library/form_enum.lasso');
 			case('datetime');
+					$input_classes->merge($makerator_admin_formElements->find('input-datetime')->second);
 					library('/_makerator/_library/form_date.lasso');
 			case('date');
+					$input_classes->merge($makerator_admin_formElements->find('input-date')->second);
 					library('/_makerator/_library/form_date.lasso');
 			case;
+					$input_classes->merge($makerator_admin_formElements->find('input-text')->second);
 					library('/_makerator/_library/form_varchar.lasso');
 			/*
 			case('review');
@@ -234,9 +266,11 @@
 			$fieldtype != 'hidden' ? $content_primary += ('
 				</fieldset>
 			');
-			var_remove('rowClass');
-			var_remove('inputClass');
-			var_remove('inputClassLeading');
+			
+			
+			iterate($makerator_admin_formElements->keys, local('formElement'));
+					var_remove(#formElement + '_classes');
+			/iterate;
 			var_remove('errorWarning');
 	/iterate;
 	$content_primary += ('
@@ -252,4 +286,6 @@
 			</fieldset>
 		</form>
 	');
+
+
 ]

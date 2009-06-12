@@ -9,7 +9,30 @@
 	// do everything within a protect block to avoid unwanted recursion	
 	protect;
 	
-	
+		handle_error;
+			var('desc') = ('error.lasso handle_error: [' + client_url + ']' + ' (' + response_filepath + ')' + ' ' + error_msg + ': ' + error_code);	
+			log_critical($desc);
+// 			if(error_code == '-9963'); 
+// 					auth_prompt; 
+// 					//auth_prompt: -noabort, -noresponse; 
+// 			/if; 
+// 					log('/_logs/errors.txt');
+// 							'handle_error: =========================================' + '\r';
+// 							response_filepath + '\r';
+// 							include_currentPath + '\r';
+// 							date + '\r';
+// 							'client_params: ' + client_params + '\r';
+// 							'params: ' + params + '\r';
+// 							'params_up: ' + params_up + '\r';
+// 							'error_msg: ' + error_msg + '\r';
+// 							'-----------------------------------------' + '\r';
+// 					/log;
+			
+		/handle_error;
+		
+		
+		
+		
 		// set HTTP status to 500 ISE
 		$__http_header__ = string_replaceregexp(
 			$__http_header__,
@@ -17,40 +40,35 @@
 			-replace='\\1 500 Internal Server Error\r\n'
 		);
 		
-		!var_defined('content_error') ? var('content_error' = string);
-		if($content_error->contains('No tag, type or constant was defined under the name'));
-				tags_load('/_makerator/_tags/', -refresh=boolean(client_param('refreshtags')));
-				redirect_url(response_filepath + '#/tags_reloaded/');
+		!var_defined('msg') ? var('msg' = string);
+		if($msg->contains('No tag, type or constant was defined') && !($msg->contains('null->join')));
+				var('desc') = ('error.lasso: [' + client_url + ']' + ' (' + response_filepath + ')' + ' ' + $code + ': ' + $msg);	
+				log_critical($desc);
+				log_critical('...' + error_msg + ' (' + error_code + ')');
+				log_critical('ERROR! error.lasso "constant" (' + (request_isAjax ? 'AJAX' | 'Regular') + ' : ' + response_filepath + '):');
+				log_critical('Reloading tags...');
+				tags_load('/_makerator/_tags/', -refresh=true);
+// 				redirect_url(response_filepath + '#/tags_reloaded/');
 		/if;
 		
+// 		if($code == -9961);
+// 				var('desc') = ('error.lasso: [' + client_url + ']' + ' (' + response_filepath + ')' + ' ' + $code + ': ' + $msg);	
+// 				log_critical($desc);
+// 				log_critical('...' + error_msg + ' (' + error_code + ')');
+// 				log_critical('ERROR! error.lasso 9961 (' + (request_isAjax ? 'AJAX' | 'Regular') + ' : ' + response_filepath + '):');
+// 				log_critical('Reloading tags...');
+// 				tags_load('/_makerator/_tags/', -refresh=true);
+// 				redirect_url(response_filepath + '#/tags_reloaded/');
+// 		/if;
 		
 		if($code);
-			// log error to error database
-			var('desc') = ('[' + client_url + ']' + ' (' + response_filepath + ')' + ' ' + $code + ': ' + $msg);	
+			var('desc') = ('error.lasso: [' + client_url + ']' + ' (' + response_filepath + ')' + ' ' + $code + ': ' + $msg);	
 			log_critical($desc);
+			log_critical('...' + error_msg + ' (' + error_code + ')');
+			log_critical('ERROR! error.lasso handler (' + (request_isAjax ? 'AJAX' | 'Regular') + ') : ' + response_filepath + '):');
 		/if;
 
-		handle_error;
-// 			if(error_code == '-9963'); 
-// 					auth_prompt; 
-// 					//auth_prompt: -noabort, -noresponse; 
-// 			/if; 
-/* 			inline($authForFileOperations); */
-/* 					log('/_logs/errors.txt'); */
-/* 							'handle_error: =========================================' + '\r'; */
-/* 							response_filepath + '\r'; */
-/* 							include_currentPath + '\r'; */
-/* 							date + '\r'; */
-/* 							'client_params: ' + client_params + '\r'; */
-/* 							'params: ' + params + '\r'; */
-/* 							'params_up: ' + params_up + '\r'; */
-/* 							'error_msg: ' + error_msg + '\r'; */
-/* 							'-----------------------------------------' + '\r'; */
-/* 					/log; */
-/* 			/inline; */
-		/handle_error;
 		
-		handle;
 				'
 <!DOCTYPE html >
 <html>
@@ -108,14 +126,12 @@
 								<h3>Error Information</h3>
 							</div>
 							<div class="ui-widget-content ui-corner-bottom">
-								<p><strong>Error Code:</strong> ' + error_code + '</p>
-								<pre>' + error_msg + '</pre>
+								<p><strong>Error Code:</strong> ' + $code + '</p>
+								<pre>' + $msg + '</pre>
 							</div>
 						</div>
-						' + var('content_error') + '
 					</div>
 					<div id="debugContent" class="content loader ui-layout-content">
-						' + var('content_debug') + '
 					</div>
 				</div>
 			</div>
@@ -131,6 +147,5 @@
 	</body>
 </html>
 			';
-		/handle;
 	/protect;
 ]

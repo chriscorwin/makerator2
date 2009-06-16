@@ -9,14 +9,17 @@
 	
 	
 	if(string(response_filepath)->equals('/reload_tags/') && boolean(client_param('reloadtags')));
-			library('/_makerator/config.lasso');
-			library('/_site/config.lasso');
-			library('/_makerator/_library/sessions.lasso');
-			library('/_makerator/_library/cookie_killer.lasso');
-			library('/_makerator/_library/sessions.lasso');
+			library_once('/_makerator/config.lasso');
+			$makerator_includes->insert('url_handler');
+			$makerator_includes->insert(include_currentPath);
+			library_once('/_site/config.lasso');
+			library_once('/_makerator/_library/sessions.lasso');
+			library_once('/_makerator/_library/cookie_killer.lasso');
+			library_once('/_makerator/_library/sessions.lasso');
 			tags_load('/_makerator/_tags/', -refresh=boolean(client_param('reloadtags')));
-			redirect_url('/#/tags_reloaded/');
+			redirect_url('/account/sign_out/#/tags_reloaded/');
 	/if;
+	
 	
 	library_once('/_makerator/config.lasso');
 	$makerator_includes->insert('url_handler');
@@ -507,107 +510,125 @@
 /* 				$content_siteAdminToolbar += '<div id="admincontent">'; */
 /* 				$content_siteAdminToolbar += include('/_makerator/_Library/admin_links.lasso'); */
 /* 				($show_page_create == false) ? $content_siteAdminToolbar += include('/_makerator/_Library/admin_toggle_page_visibility.lasso'); */
-
-
-	else(file_exists('/_site/pages/'+((((response_filepath)->replace('/','__')&)->removeleading('__')&)->removeTrailing('__')&)+'.lasso'));
-			$content_primary+=include_once('/_site/pages/'+((((response_filepath)->replace('/','__')&)->removeleading('__')&)->removeTrailing('__')&)+'.lasso');
+// 	else(file_exists('/_site/pages/'+((((response_filepath)->replace('/','__')&)->removeleading('__')&)->removeTrailing('__')&)+'.lasso'));
+// 			
 	else;
-			//search for page in dB
-			var('sql' = string);
-			if($thisLevel_Name != 'Home');
-					$sql += 'SELECT s.template, s.page_url, s.name, s.id, s.content FROM ' + $tablePrefix + 'pages AS s WHERE UCASE(s.page_url) = UCASE("' + $thisLevel_Name + '")';
-			else;
+			
+			
+			
+			//search for page content
+			var(
+				'sql' = string
+			,	'pagesContentFound' = false
+			,	'dbContentFound' = false
+			,	'show_page_create'=false
+			,	'dbPageFound' = false
+			);
+			
+			if(response_path == '/');
+					// look for file-based content for '/'
+					if(file_exists('/_site/pages/home.lasso'));
+							$content_primary += include_once('/_site/pages/home.lasso');
+							$pagesContentFound = true;
+					/if;
 					$sql += 'SELECT s.template, s.page_url, s.name, s.id, s.content FROM ' + $tablePrefix + 'pages AS s ORDER BY s.lft LIMIT 1';
+			else;
+					// look for file-based content
+					if(file_exists('/_site/pages/'+((((response_filepath)->replace('/','__')&)->removeleading('__')&)->removeTrailing('__')&)+'.lasso'));
+							$content_primary += include_once('/_site/pages/'+((((response_filepath)->replace('/','__')&)->removeleading('__')&)->removeTrailing('__')&)+'.lasso');
+							$pagesContentFound = true;
+					/if;
+					$sql += 'SELECT s.template, s.page_url, s.name, s.id, s.content FROM ' + $tablePrefix + 'pages AS s WHERE UCASE(s.page_url) = UCASE("' + $thisLevel_Name + '")';
 			/if;
-			inline($authForDatabase, action_params, -sql=$sql);
-				if(found_count >= 1);
-						var('show_page_create'=false);
-						rows;
-								var('thisURLpath' =	 (xs_cat->getURLpath(-id=column('id'), -cattable=$tablePrefix + 'pages')));
-								$thisURLpath->beginswith('//') ? $thisURLpath->removeleading('//');
-								!$thisURLpath->beginswith('/') ? $thisURLpath = '/' $thisURLpath;
-								($thisURLpath == '/') ||($thisURLpath == '/') || ($thisURLpath == '/Home') ? $thisURLpath = '/Home/';
-								if($thisURLpath == response_path || $thisURLpath == '/Home/');
-										$show_page_create=false;
-										var('pageID' = column('id'));
-										var('templateID' = column('template'));
-										inline(-sql='SELECT name FROM ' + $tablePrefix + 'templates WHERE id='$templateID);
-											if(found_count == 1);
-												rows;
-														$templating_templateName =  column('name');
-												/rows;
+			inline($authForDatabase, -sql=$sql);
+					if(found_count >= 1);
+							$dbPageFound = true;
+							rows;
+									var('thisURLpath' =	 (xs_cat->getURLpath(-id=column('id'), -cattable=$tablePrefix + 'pages')));
+									$thisURLpath->beginswith('//') ? $thisURLpath->removeleading('//');
+									!$thisURLpath->beginswith('/') ? ($thisURLpath = '/' + $thisURLpath);
+									($thisURLpath == '/Home/') || ($thisURLpath == 'Home') || ($thisURLpath == 'Home/') ? $thisURLpath = '/';
+									if($thisURLpath == response_path || $thisURLpath == '' && response_path == '/');
+											$show_page_create = false;
+											var('pageID' = column('id'));
+											var('templateID' = column('template'));
+											inline(-sql='SELECT name FROM ' + $tablePrefix + 'templates WHERE id='$templateID);
+													if(found_count == 1);
+															rows;
+																	$templating_templateName =  column('name');
+															/rows;
+													else;
+													/if;
+											/inline;
+											
+											var('pageName' = column('name'));
+											var('pageurl' = column('page_url'));
+											var('page_content' = column('content'));
+											$page_content != '' ? $dbContentFound = true;
+											$content_pageTitle = string(column('name'));
+											$content_primary += @(string(column('content')));
+											var('path_to_page' = (xs_cat->getURLpath(-id=$pageID, -cattable=($tablePrefix + 'pages'))));
+											if((response_path)->beginswith($makerator_pathToAdmin));
+													$content_siteAdminToolbar += '<div id="admincontent">';
+											else(string(response_path)->equals('/'));
+													if($show_content_siteAdmin);
+															$content_siteAdminToolbar += '<div id="admincontent">';
+															$content_siteAdminToolbar += include('/_makerator/_Library/admin_links.lasso');
+															$content_siteAdminToolbar += include('/_makerator/_Library/edit_this_page.lasso');
+													/if;
 											else;
+													if($show_content_siteAdmin);
+															$content_siteAdminToolbar += '<div id="admincontent">';
+															$content_siteAdminToolbar += include('/_makerator/_library/edit_this_page.lasso');
+															$content_siteAdminToolbar += include('/_makerator/_library/admin_toggle_page_visibility.lasso');
+															$content_siteAdminToolbar += include('/_makerator/_library/admin_button_changeurl.lasso');
+															// $content_siteAdminToolbar += include('/_makerator/_library/admin_button_renamepage.lasso');
+															// $content_siteAdminToolbar += include('/_makerator/_library/admin_button_deletepage.lasso');
+															$content_siteAdminToolbar += include('/_makerator/_library/admin_links.lasso');
+															// site-specific admin links
+															inline($authForFileOperations);
+																	if(file_exists('/_site/_library/admin_links.lasso'));
+																			include('/_site/_library/admin_links.lasso');
+																	/if;
+															/inline;
+													/if;
 											/if;
-										/inline;
-										
-										var('pageName' = column('name'));
-										var('pageurl' = column('page_url'));
-										var('page_content' = column('content'));
-										$content_pageTitle = string(column('name'));
-										$content_primary += @(string(column('content')));
-										var('path_to_page' = (xs_cat->getURLpath(-id=$pageID, -cattable=($tablePrefix + 'pages'))));
-										if((response_path)->beginswith($makerator_pathToAdmin));
-												$content_siteAdminToolbar += '<div id="admincontent">';
-										else((response_path)->beginswith('/Home/'));
-												if($show_content_siteAdmin);
-														$content_siteAdminToolbar += '<div id="admincontent">';
-														$content_siteAdminToolbar += include('/_makerator/_Library/admin_links.lasso');
-														$content_siteAdminToolbar += include('/_makerator/_Library/edit_this_page.lasso');
-												/if;
-										else;
-												if($show_content_siteAdmin);
-														$content_siteAdminToolbar += '<div id="admincontent">';
-														$content_siteAdminToolbar += include('/_makerator/_library/edit_this_page.lasso');
-														$content_siteAdminToolbar += include('/_makerator/_library/admin_toggle_page_visibility.lasso');
-														$content_siteAdminToolbar += include('/_makerator/_library/admin_button_changeurl.lasso');
-														// $content_siteAdminToolbar += include('/_makerator/_library/admin_button_renamepage.lasso');
-														// $content_siteAdminToolbar += include('/_makerator/_library/admin_button_deletepage.lasso');
-														$content_siteAdminToolbar += include('/_makerator/_library/admin_links.lasso');
-														// site-specific admin links
-														inline($authForFileOperations);
-																if(file_exists('/_site/_library/admin_links.lasso'));
-																		include('/_site/_library/admin_links.lasso');
-																/if;
-														/inline;
-												/if;
-										/if;
-										$show_page_create == false ? loop_abort;
-								else;
-										var('path_to_page'=response_path);
-										$show_page_create = true;
-								/if;
-						/rows;
-						if($show_page_create == true);
-							// this page does not exist
-							var('content_pageTitle_base' = $content_pageTitle);
-							$content_pageTitle = 'Oops! File Not Found (404)';
-							$content_primary += ('
-								<div class="ui-widget">
-									<div class="ui-state-error ui-corner-all">
-										<p>
-											<span class="ui-icon ui-icon-alert ui-icon-left"><strong class="ui-helper-hidden-accessible"></strong></span>
-											<strong>Error!</strong> The page you are looking for appears not to exist.
-										</p>
-									</div>
-								</div>
-							');
-						/if;
-				else;
-						// this page does not exist
-						var('path_to_page'=response_path);
-						var('content_pageTitle_base' = $content_pageTitle);
-						$content_pageTitle = 'Oops! File Not Found (404)';
-						$content_primary += ('
-							<div class="ui-widget">
-								<div class="ui-state-error ui-corner-all">
-									<p>
-										<span class="ui-icon ui-icon-alert ui-icon-left"><strong class="ui-helper-hidden-accessible"></strong></span>
-										<strong>Error!</strong> The page you are looking for appears not to exist.
-									</p>
-								</div>
-							</div>
-						');
-				/if;
+											$show_page_create == false ? loop_abort;
+									else;
+											var('path_to_page'=response_path);
+											$show_page_create = true;
+									/if;
+							/rows;
+							if(!$pagesContentFound && !$dbContentFound && $dbPageFound);
+									$content_primary += ('
+										<div class="ui-widget">
+											<div class="ui-state-highlight ui-corner-all">
+												<p>
+													<span class="ui-icon ui-icon-info ui-icon-left"><strong class="ui-helper-hidden-accessible"></strong></span>
+													<strong>Attention!</strong> This URL does not currently have any content associated with it.
+												</p>
+											</div>
+										</div>
+									');
+							/if;
+					else;
+							handle(!$pagesContentFound && !$dbContentFound);
+									// this page does not exist
+									var('path_to_page'=response_path);
+									var('content_pageTitle_base' = $content_pageTitle);
+									$content_pageTitle = 'Oops! File Not Found (404)';
+									$content_primary += ('
+										<div class="ui-widget">
+											<div class="ui-state-error ui-corner-all">
+												<p>
+													<span class="ui-icon ui-icon-alert ui-icon-left"><strong class="ui-helper-hidden-accessible"></strong></span>
+													<strong>Error!</strong> The page you are looking for appears not to exist.
+												</p>
+											</div>
+										</div>
+									');
+							/handle;
+					/if;
 			/inline;
 	/if;
 	
@@ -795,26 +816,29 @@
 			$content_pageTitle += ' - ' + $content_siteTitle;
 			
 			local('testForJavascript' = false);
-			if($pageLoadsUseAjax && response_filepath == '/');
-					// nothing
-			else($pageLoadsUseAjax && response_filepath != '/');
-					#testForJavascript = true;
-					$pageLoadsUseAjax = false;
-			else(client_param('j') == 't');
-					#testForJavascript = false;
-					$pageLoadsUseAjax = true;
-			else(client_param('j') == 'u');
-					#testForJavascript = true;
-			else($pageLoadsUseAjax && response_filepath != '/');
-					$pageLoadsUseAjax = false;
-					redirect_url('/#' + response_filepath);
-			else(action_param('j') == 'f');
-					$forceAjaxContent = false;
-					$pageLoadsUseAjax = false;
-			else(!$pageLoadsUseAjax && response_filepath == '/');
-					#testForJavascript = false;
-			else(!$pageLoadsUseAjax && response_filepath != '/');
-					#testForJavascript = false;
+			
+			if($default_pageLoadsUseAjax && $default_forceAjaxContent);
+					if($pageLoadsUseAjax && response_filepath == '/');
+							// nothing
+					else($pageLoadsUseAjax && response_filepath != '/');
+							#testForJavascript = true;
+							$pageLoadsUseAjax = false;
+					else(client_param('j') == 't');
+							#testForJavascript = false;
+							$pageLoadsUseAjax = true;
+					else(client_param('j') == 'u');
+							#testForJavascript = true;
+					else($pageLoadsUseAjax && response_filepath != '/');
+							$pageLoadsUseAjax = false;
+							redirect_url('/#' + response_filepath);
+					else(action_param('j') == 'f');
+							$forceAjaxContent = false;
+							$pageLoadsUseAjax = false;
+					else(!$pageLoadsUseAjax && response_filepath == '/');
+							#testForJavascript = false;
+					else(!$pageLoadsUseAjax && response_filepath != '/');
+							#testForJavascript = false;
+					/if;
 			/if;
 			inline($authForFileOperations);
 					
@@ -914,7 +938,20 @@
 					/if;
 					// display the page
 					$templating_trailingHtml->size > 1 ? content_body = string(content_body)->replace('</body>', $templating_trailingHtml + '</body>')&;
+					
+					
+					if($makerator_saveRenderedVersion);
+							content_body += '<!-- 
+This file was automatically generated by Makerator.
+Render date/time: ' + date->format('%QT%T') + '
+Render Path: ' + $makerator_renderedVersionPath + response_path + 'index.html
+ -->';
+							var('out_rendered' = string(content_body));
+							!file_exists($makerator_renderedVersionPath + response_path + 'index.html') ? file_Create($makerator_renderedVersionPath + response_path + 'index.html');
+							file_Write(($makerator_renderedVersionPath + response_path + 'index.html'), $out_rendered, -fileOverWrite);
+					/if;
 					content_body;
+					
 			/inline;
 	/if;
 ]

@@ -9,13 +9,6 @@
 	
 	
 	if(string(response_filepath)->equals('/reload_tags/') && boolean(client_param('reloadtags')));
-			library_once('/_makerator/config.lasso');
-			$makerator_includes->insert('url_handler');
-			$makerator_includes->insert(include_currentPath);
-			library_once('/_site/config.lasso');
-			library_once('/_makerator/_library/sessions.lasso');
-			library_once('/_makerator/_library/cookie_killer.lasso');
-			library_once('/_makerator/_library/sessions.lasso');
 			tags_load('/_makerator/_tags/', -refresh=boolean(client_param('reloadtags')));
 			redirect_url('/account/sign_out/#/tags_reloaded/');
 	/if;
@@ -146,6 +139,7 @@
 </html>
 ';
 					else;
+							makerator_errorManager($makerator_currentInclude, error_code, error_msg);
 							!local_defined('json_return') ? local('json_return' = map);
 							local('accept_header' = request_params->find('Accept'));
 							if($code);

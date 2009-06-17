@@ -92,6 +92,10 @@
 	,	'makerator_authenticationExpiresMinutes'			=	21600
 	,	'makerator_currentActionExpiresMinutes'			=	120
 	
+	,	'makerator_saveRenderedVersion'					=	false
+	,	'makerator_renderedVersionPathPrefix'			=	''
+	,	'makerator_renderedVersionPath'					=	'/_rendered'
+	
 	,	'makerator_assetManagerSubdomains_cookieless'	=	array(
 															'(/assets/css)(/[^"]+?)'		=	'http://assets.' + server_name + '\\2\\3'
 														,	'(/assets/scripts)(/[^"]+?)'		=	'http://assets.' + server_name + '\\2\\3'
@@ -121,10 +125,6 @@
 														,	'styleModules'					=	'/assets/css/modules/'
 														)
 	);
-	
-	
-	
-	
 	
 	iterate($listeratorValidationDataTypes, local('datatype'));
 			$listeratorValidationKeys->insert(#datatype);

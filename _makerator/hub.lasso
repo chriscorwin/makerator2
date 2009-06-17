@@ -85,7 +85,7 @@
 	<body class="error" >
 		<div id="container" class="container content">
 			<div id="header" class="column span-16 first last">
-				<a href="/" id="masthead" title=" #{pageTitle}# " class="loader"><strong>Error</strong></a>
+				<a href="/" id="masthead" title="Makerator: An Error Has Occured" class="loader"><strong>Error</strong></a>
 			</div>
 			
 			

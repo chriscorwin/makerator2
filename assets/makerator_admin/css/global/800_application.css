@@ -1,11 +1,11 @@
 
 #masthead
 {
-	background-image: url(/assets/images/chriscorwin-masthead-948x180.gif);
+	background-image: url(../../images/masthead.gif);
 	display: block;
 	width: 960px;
-	height: 180px;
-	margin: 20px 0;
+	height: 125px;
+	margin: 10px 0 10px -9px;
 	background-repeat: no-repeat;
 }
 
@@ -27,11 +27,11 @@
 /*
 	height: 100px;
 	width: 100px;
-	background-image: url(/assets/images/loading-bars-319CB7-on-transparent_100x100.gif);
+	background-image: url(../../images/loading-bars-319CB7-on-transparent_100x100.gif);
 */
 	height: 48px;
 	width: 48px;
-	background-image: url(/assets/images/666666-ajax-loader-bars.gif);
+	background-image: url(../../images/666666-ajax-loader-bars.gif);
 	background-repeat: no-repeat;
 	z-index: 101;
 	opacity: .7; 

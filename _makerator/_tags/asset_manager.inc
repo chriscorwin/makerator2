@@ -14,6 +14,7 @@
 		define_tag('oncreate');
 				!var_defined('__amScripts')		?	var('__amScripts'	=	array_unique);
 				!var_defined('__amStyles')		?	var('__amStyles'	=	array_unique);
+				!var_defined('__amPages')		?	var('__amPages'	=	array_unique);
 		/define_tag;
 		
 		
@@ -33,14 +34,17 @@
 				,	'minify'				=	true
 				,	'compress'				=	false
 				,	'refresh'				=	false
-				,	'paths'					=	map('yui'		=	server_webroot + '/lib/tools/yui_compressor.jar'
-											,	'scriptbase'		=	'/lib/scripts/base/'
-											,	'scriptcache'	=	'/lib/scripts/cache/'
-											,	'scriptModules'	=	'/lib/scripts/modules/'
-											,	'stylebase'		=	'/lib/styles/base/'
-											,	'stylecache'	=	'/lib/styles/cache/'
-											,	'styleModules'	=	'/lib/styles/modules/'
-											)
+				,	'paths'					=	map(
+							'yui'					=	server_webroot + '/lib/tools/yui_compressor.jar'
+						,	'scriptbase'			=	'/lib/scripts/base/'
+						,	'scriptcache'			=	'/lib/scripts/cache/'
+						,	'scriptModules'			=	'/lib/scripts/modules/'
+						,	'stylebase'				=	'/lib/styles/base/'
+						,	'stylecache'			=	'/lib/styles/cache/'
+						,	'styleModules'			=	'/lib/styles/modules/'
+						,	'pagesbase'				=	'/lib/pages/'
+						,	'pagescache'			=	'/lib/pages/cached/'
+						)
 				,	'subdomains'		=	array
 				));
 				
@@ -99,10 +103,29 @@
 				
 				
 				file_exists(#moduleScriptFile)	?	$__amScripts->insert(#moduleScriptFile);
-				file_exists(#stub + 'js')		?	$__amScripts->insert(#stub + '.js');
+				file_exists(#stub + '.js')		?	$__amScripts->insert(#stub + '.js');
 				file_exists(#moduleStyleFile)	?	$__amStyles->insert(#moduleStyleFile);
-				file_exists(#stub + 'css')		?	$__amStyles->insert(#stub + '.css');
+				file_exists(#stub + '.css')		?	$__amStyles->insert(#stub + '.css');
 				return(include(#path));
+		/define_tag;
+		
+		
+		
+		define_tag('loadpage', -req='path', -copy, -encodenone);
+				
+				local('stub' = ($__amOptions->find('paths')->find('pagesbase') + ((((#path)->replace('/','__')&)->removeleading('__')&)->removeTrailing('__')&)));
+				
+				
+				local('pageScriptFile'		=	#stub + '.js');
+				local('pageStyleFile'		=	#stub + '.css');
+				local('pageFile'			=	#stub + '.lasso');
+				
+				
+				file_exists(#pageScriptFile)	?	$__amScripts->insert(#pageScriptFile);
+				file_exists(#pageStyleFile)		?	$__amStyles->insert(#pageStyleFile);
+				file_exists(#pageFile)			?	$__amPages->insert(#pageFile);
+				return(include(#pageFile));
+				
 		/define_tag;
 		
 		

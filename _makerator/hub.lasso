@@ -10,7 +10,7 @@
 	
 	if(string(response_filepath)->equals('/reload_tags/') && boolean(client_param('reloadtags')));
 			tags_load('/_makerator/_tags/', -refresh=boolean(client_param('reloadtags')));
-			redirect_url('/account/sign_out/#/tags_reloaded/');
+			redirect_url('/#/tags_reloaded/');
 	/if;
 	
 	
@@ -202,41 +202,10 @@
 	
 	
 	
-	protect;
-			handle_error;
-					local('thisError' = '
-						<div class="ui-widget">
-							<div class="ui-state-error ui-corner-all">
-								<p class=""><strong>Error reported by:</strong> ' + include_CurrentPath + '</p>
-							</div>
-						</div>
-						<div class="ui-widget">
-							<div class="ui-widget-header ui-corner-top">
-								<h3>Error Information</h3>
-							</div>
-							<div class="ui-widget-content ui-corner-bottom">
-								<p><strong>Error Code:</strong> ' + error_code + '</p>
-								<pre>' + error_msg + '</pre>
-							</div>
-						</div>
-					');
-					$content_error += #thisError;
-// 					makerator_errorManager($makerator_currentInclude, error_code, error_msg);
-					var('desc') = ('hub asset_manager handle_error: [' + client_url + ']' + ' (' + response_filepath + ')' + ' ' + error_msg + ': ' + error_code);	
-					log_critical($desc);
-			/handle_error;
-			
-			
-			asset_manager->options(
-				-usecache							=	false
-			,	-minify								=	false
-			,	-compress							=	false
-			,	-refresh							=	boolean(client_param('refreshcaches'))
-			,	-paths								=	$makerator_assetManagerPaths
-			,	-subdomains							=	$makerator_assetManagerSubdomains
-			);
-	/protect;
 	
+	inline($authForFileOperations);
+		file_exists('/_site/_library/asset_manager.inc') ? 	library('/_site/_library/asset_manager.inc') | library('/_makerator/_library/asset_manager.inc');
+	/inline;
 	
 	
 	var('levels' = response_path->split('/')->removeall('')&);
@@ -521,15 +490,17 @@
 			
 			if(response_path == '/');
 					// look for file-based content for '/'
-					if(file_exists('/_site/pages/home.lasso'));
-							$content_primary += include_once('/_site/pages/home.lasso');
+					local('pageContent' = asset_manager->loadpage('/home/'));
+					if(#pageContent != '');
+							$content_primary += #pageContent;
 							$pagesContentFound = true;
 					/if;
 					$sql += 'SELECT s.template, s.page_url, s.name, s.id, s.content FROM ' + $tablePrefix + 'pages AS s ORDER BY s.lft LIMIT 1';
 			else;
 					// look for file-based content
-					if(file_exists('/_site/pages/'+((((response_filepath)->replace('/','__')&)->removeleading('__')&)->removeTrailing('__')&)+'.lasso'));
-							$content_primary += include_once('/_site/pages/'+((((response_filepath)->replace('/','__')&)->removeleading('__')&)->removeTrailing('__')&)+'.lasso');
+					local('pageContent' = asset_manager->loadpage(response_filepath));
+					if(#pageContent != '');
+							$content_primary += #pageContent;
 							$pagesContentFound = true;
 					/if;
 					$sql += 'SELECT s.template, s.page_url, s.name, s.id, s.content FROM ' + $tablePrefix + 'pages AS s WHERE UCASE(s.page_url) = UCASE("' + $thisLevel_Name + '")';

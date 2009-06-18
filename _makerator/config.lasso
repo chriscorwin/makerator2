@@ -117,12 +117,14 @@
 														,	'(/assets/images)(/[^"]+?)'		=	'\\2\\3'
 														)
 	,	'makerator_assetManagerPaths'					=	map('yui'						=	'/assets/yuicompressor.jar'
-														,	'scriptbase'						=	'/assets/scripts/global/'
+														,	'scriptbase'					=	'/assets/scripts/global/'
 														,	'scriptcache'					=	'/assets/scripts/cached/'
 														,	'scriptModules'					=	'/assets/scripts/modules/'
 														,	'stylebase'						=	'/assets/css/global/'
 														,	'stylecache'					=	'/assets/css/cached/'
 														,	'styleModules'					=	'/assets/css/modules/'
+														,	'pagesbase'						=	'/assets/pages/'
+														,	'pagescache'					=	'/assets/pages/cached/'
 														)
 	);
 	

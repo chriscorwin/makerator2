@@ -1,52 +1,117 @@
 /* superfish skin*/
 #navbarTop
 {
-	float: none;
-	margin: 0 0 1em 0;
+	float: left;
+	clear: both;
+	margin: 0 auto 1em auto;
+	padding: 0;
+	background-image: url(/assets/images/topNavBackground_960x28.gif);
+	background-repeat: no-repeat;
+	height: 28px;
 }
+	#navbarTop li.ui-state-default, #navbarTop li.ui-widget-content, #navbarTop li.ui-state-hover, #navbarTop li a.ui-state-active,
+	#navbarTop li a.ui-state-default, #navbarTop li a.ui-state-hover, #navbarTop li a.ui-state-active
+	{
+		border: 0;
+	}
 
-#navbarTop a.ui-state-default
+
+#navbarTop a.ui-state-default, #navbarTop li.ui-state-default a, #navbarTop li.ui-state-default a:link
 {
 	text-decoration: none;
 	outline: none;
-	padding: .55em 1.2em;
+	padding: 0;
+	background: none;
+	text-shadow: #970000 0px 1px 2px;
 }
+
+#navbarTop li a
+{
+	color: #FFF;
+	font-weight: 100 !important;
+	padding: .55em .8em !important;
+	letter-spacing: .04px;
+}
+		#navbarTop li.first a
+		{
+			padding-left: 0 !important;
+			margin-left: 10px;
+		}
+		#navbarTop li.last a
+		{
+			padding-right: 0 !important;
+			margin-right: 10px;
+		}
 
 #navbarTop a.ui-state-default, #navbarTop a.ui-state-default:visited
 {
 	/* visited pseudo selector so IE6 applies text colour*/
+	color: #fff;
 }
 
 #navbarTop a.ui-state-hover, #navbarTop a.ui-state-hover:visited
 {
 	/* visited pseudo selector so IE6 applies text colour*/
 	outline: none;
+	color: #fff;
 }
-
-.sf-menu li
+#navbarTop.sf-menu li ul
 {
-	margin-right: .385em;
+	background-image: url(/assets/images/topNavBackground_960x28.gif);
+	background-repeat: no-repeat;
+	height: 28px;
+	margin-top: -4px;
 }
 
-.sf-menu li li
+
+#navbarTop.sf-menu li
 {
+	background: url(/assets/images/topNav_memberBorderRight_1x22.gif);
+	background-repeat: no-repeat;
+	background-position: right 2px;
 }
+	#navbarTop.sf-menu li.last
+	{
+		background: none;
+	}
 
-.sf-menu li li li
+#navbarTop.sf-menu li li
 {
+	background: none !important;
 }
 
-.sf-menu li:hover, .sf-menu li.ui-state-hover,
-.sf-menu a:focus, .sf-menu a:hover, .sf-menu a:active
+#navbarTop.sf-menu li li li
+{
+	background: none !important;
+}
+
+#navbarTop.sf-menu li:hover, #navbarTop.sf-menu li.ui-state-hover,
+#navbarTop.sf-menu a:focus, #navbarTop.sf-menu a:hover, #navbarTop.sf-menu a:active
 {
 	outline: 0;
 }
 
+#navbarTop.sf-menu li.ui-state-hover a
+{
+/*
+	text-shadow: #FFDE00 0px 0px 5px !important;
+*/
+	text-shadow: #6C0000 0px 1px 2px !important;
+}
 
+#navbarTop.sf-menu li a.ui-state-active
+{
+	text-shadow: #6C0000 0px 1px 2px !important;
+}
+		#navbarTop li a.ui-state-active, #navbarTop li a.ui-state-hover
+		{
+			background: none !important;
+			background-image: none !important;
+		}
 
 
 /*** arrows **/
-.sf-menu a.sf-with-ul
+#navbarTop.sf-menu a.sf-with-ul
 {
 	padding-right: 2.25em;
 	min-width: 1px;
@@ -85,20 +150,20 @@ li.ui-state-hover > a > .sf-sub-indicator
 }
 
 /* point right for anchors in subs */
-.sf-menu ul .sf-sub-indicator
+#navbarTop.sf-menu ul .sf-sub-indicator
 {
 }
 
-.sf-menu ul a > .sf-sub-indicator
+#navbarTop.sf-menu ul a > .sf-sub-indicator
 {
 }
 
 /* apply hovers to modern browsers */
-.sf-menu ul a:focus > .sf-sub-indicator,
-.sf-menu ul a:hover > .sf-sub-indicator,
-.sf-menu ul a:active > .sf-sub-indicator,
-.sf-menu ul li:hover > a > .sf-sub-indicator,
-.sf-menu ul li.ui-state-hover > a > .sf-sub-indicator
+#navbarTop.sf-menu ul a:focus > .sf-sub-indicator,
+#navbarTop.sf-menu ul a:hover > .sf-sub-indicator,
+#navbarTop.sf-menu ul a:active > .sf-sub-indicator,
+#navbarTop.sf-menu ul li:hover > a > .sf-sub-indicator,
+#navbarTop.sf-menu ul li.ui-state-hover > a > .sf-sub-indicator
 {
 	/* arrow hovers for modern browsers*/
 }

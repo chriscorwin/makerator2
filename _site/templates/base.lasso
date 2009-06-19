@@ -8,13 +8,15 @@
 	</head>
 	<body class="home" >
 		<div id="container" class="container content">
-			<div id="header" class="column span-16 first last loader">
+			<div id="header" class="column span-16  last loader">
 				<a href="/" id="masthead" title=" #{pageTitle}# "><strong><!-- #{pageTitle}# --></strong></a>
-				<!-- #{navbarTop}# -->
+				<div class="column span-16  last loader">
+					<!-- #{navbarTop}# -->
+				</div>
 			</div>
 			
 			
-			<div id="primary" class="column span-16 first last">
+			<div id="primary" class="column span-16  last">
 				<div id="primaryContentWrapper">
 					<div id="primaryContent" class="loader">
 						<!-- #{primary}# -->
@@ -22,8 +24,8 @@
 			</div>
 			
 			
-			<div id="" class="column span-16 first last">
-				<div id="secondary" class="column span-8 first">
+			<div id="" class="column span-16  last">
+				<div id="secondary" class="column span-8 ">
 					<div id="secondaryContentWrapper">
 						<div id="secondaryContent" class="loader">
 							<!-- #{secondary}# -->
@@ -50,7 +52,7 @@
 				</div>
 			</div>
 			
-			<div id="footer" class="column span-16 first last">
+			<div id="footer" class="column span-16  last">
 				<div id="footerContentWrapper">
 					<div id="footerContent" class="loader">
 						<!-- #{footer}# -->

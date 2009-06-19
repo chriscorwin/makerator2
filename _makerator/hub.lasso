@@ -490,7 +490,7 @@
 			
 			if(response_path == '/');
 					// look for file-based content for '/'
-					local('pageContent' = asset_manager->loadpage('/home/'));
+					local('pageContent' = asset_manager->loadpage('home'));
 					if(#pageContent != '');
 							$content_primary += #pageContent;
 							$pagesContentFound = true;
@@ -729,7 +729,7 @@
 							);
 									local(
 										'slot'							=	'(\<![ \r\n\t]*--)?( *)(\#\{' + #module + '\}\#)( *)(--\>)?'
-									,	'modulePath'					=	'/_site/modules/' + #module + '.inc'
+									,	'modulePath'					=	'' + #module + '.inc'
 									,	'contentForSlot'				=	string
 									);
 									
@@ -825,39 +825,39 @@
 							var('template' = 'admin');
 							$content_siteAdminToolbar += include('/_makerator/_library/admin_links.lasso');
 							$user_can_makerator_admin ? $content_siteAdminToolbar += '</div>';
-							var('rendered' = asset_manager->loadmodule('/_makerator/templates/' $templating_templateName '.lasso'));
+							var('rendered' = asset_manager->load('/_makerator/templates/' $templating_templateName '.lasso'));
 					else($apparent_AuthenticationStatus == 'Authorized');
 							if(file_exists('/_site/templates/' + $templating_templateName + '.lasso'));
-									var('rendered' = asset_manager->loadmodule('/_site/templates/' + $templating_templateName + '.lasso'));
+									var('rendered' = asset_manager->load('/_site/templates/' + $templating_templateName + '.lasso'));
 							else;
-									var('rendered' = asset_manager->loadmodule('/_makerator/templates/base.lasso'));
+									var('rendered' = asset_manager->load('/_makerator/templates/base.lasso'));
 							/if;
 					else;
 							if(file_exists('/_site/templates/' + $templating_templateName + '.lasso'));
-									var('rendered' = asset_manager->loadmodule('/_site/templates/' + $templating_templateName + '.lasso'));
+									var('rendered' = asset_manager->load('/_site/templates/' + $templating_templateName + '.lasso'));
 							else;
-									var('rendered' = asset_manager->loadmodule('/_makerator/templates/base.lasso'));
+									var('rendered' = asset_manager->load('/_makerator/templates/base.lasso'));
 							/if;
 					/if;
 					
 					
 					if(file_exists('/_site/templates/' + $templating_templateName + '.lasso'));
-							var('rendered' = asset_manager->loadmodule('/_site/templates/' + $templating_templateName + '.lasso'));
+							var('rendered' = asset_manager->load('/_site/templates/' + $templating_templateName + '.lasso'));
 					else;
-							var('rendered' = asset_manager->loadmodule('/_makerator/templates/base.lasso'));
+							var('rendered' = asset_manager->load('/_makerator/templates/base.lasso'));
 					/if;
 					iterate($templating_templateModules, 
 						local('module')
 					);
 							local(
 								'slot'							=	'(\<![ \r\n\t]*--)?( *)(\#\{' + #module + '\}\#)( *)(--\>)?'
-							,	'modulePath'					=	'/_site/modules/' + #module + '.inc'
+							,	'modulePath'					=	'' + #module + '.inc'
 							,	'contentForSlot'				=	string
 							);
 							
 							var_defined('content_' + #module + '_leading')		?	#contentForSlot += var('content_' + #module + '_leading');
 							var_defined('content_' + #module)					?	#contentForSlot += var('content_' + #module);
-							file_exists(#modulePath)							?	#contentForSlot += asset_manager->loadmodule(#modulePath);
+							#contentForSlot += asset_manager->loadmodule(#modulePath);
 							var_defined('content_' + #module + '_trailing')		?	#contentForSlot += var('content_' + #module + '_trailing');
 							
 							

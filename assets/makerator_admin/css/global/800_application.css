@@ -1,0 +1,97 @@
+
+#masthead
+{
+	background-image: url(../../images/masthead.gif);
+	display: block;
+	width: 960px;
+	height: 125px;
+	margin: 10px 0 10px -9px;
+	background-repeat: no-repeat;
+}
+
+	#masthead strong
+	{
+		display: none;
+	}
+
+
+
+
+
+
+
+.ui-state-loading
+{
+	display: block;
+	margin: 0px;
+/*
+	height: 100px;
+	width: 100px;
+	background-image: url(../../images/loading-bars-319CB7-on-transparent_100x100.gif);
+*/
+	height: 48px;
+	width: 48px;
+	background-image: url(../../images/666666-ajax-loader-bars.gif);
+	background-repeat: no-repeat;
+	z-index: 101;
+	opacity: .7; 
+	filter:Alpha(Opacity=70);
+}
+		.ui-state-loading strong
+		{
+			display: none !important;
+		}
+
+#debugContent .ui-state-debug .ui-widget-header
+{
+	background: none !important;
+	border: none !important;
+}
+
+
+#debugContent .ui-state-debug .ui-widget-content p
+{
+	font-size:100%;
+	line-height: 1.4em !important;
+	font-family:mono-space,monospace;
+	background: none !important;
+	border: none !important;
+	color: #fff;
+	
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+
+#errorContent .ui-state-error .ui-widget-header
+{
+	background: none !important;
+	border: none !important;
+}
+
+
+#errorContent .ui-state-error .ui-widget-content p
+{
+	font-size:100%;
+	line-height: 1.4em !important;
+	font-family:mono-space,monospace;
+	background: none !important;
+	border: none !important;
+	color: #fff;
+	
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+
+
+#makeKeywordUrlMatch
+{
+	margin: 1%;
+}

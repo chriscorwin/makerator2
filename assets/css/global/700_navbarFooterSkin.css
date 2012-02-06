@@ -1,0 +1,166 @@
+/* superfish skin*/
+#navbarFooter
+{
+	float: left;
+	clear: both;
+	margin: 0 auto;
+	padding: 1.3em 0 .5em 0;
+	height: 1em;
+}
+	#navbarFooter li.ui-state-default, #navbarFooter li.ui-widget-content, #navbarFooter li.ui-state-hover, #navbarFooter li a.ui-state-active,
+	#navbarFooter li a.ui-state-default, #navbarFooter li a.ui-state-hover, #navbarFooter li a.ui-state-active
+	{
+		border: 0;
+	}
+
+
+#navbarFooter a.ui-state-default, #navbarFooter li.ui-state-default a, #navbarFooter li.ui-state-default a:link
+{
+	text-decoration: none;
+	outline: none;
+	padding: 0;
+	background: none;
+}
+
+#navbarFooter li a
+{
+	color: #999999;
+	font-weight: 100 !important;
+	padding: .125em .8em !important;
+	letter-spacing: -.04px;
+}
+		#navbarFooter li.first a
+		{
+			padding-left: 0 !important;
+			margin-left: 10px;
+		}
+		#navbarFooter li.last a
+		{
+			padding-right: 0 !important;
+			margin-right: 10px;
+		}
+
+#navbarFooter a.ui-state-default, #navbarFooter a.ui-state-default:visited
+{
+	/* visited pseudo selector so IE6 applies text colour*/
+	color: #999999;
+}
+
+#navbarFooter a.ui-state-hover, #navbarFooter a.ui-state-hover:visited
+{
+	/* visited pseudo selector so IE6 applies text colour*/
+	outline: none;
+	color: #999999;
+}
+
+#navbarFooter.sf-menu li
+{
+	background: none !important;
+	border-right: 1px solid 	#999999;
+}
+	#navbarFooter.sf-menu li.last
+	{
+		border: none;
+	}
+
+#navbarFooter.sf-menu li li
+{
+	background: none !important;
+}
+
+#navbarFooter.sf-menu li li li
+{
+	background: none !important;
+}
+
+#navbarFooter.sf-menu li:hover, #navbarFooter.sf-menu li.ui-state-hover,
+#navbarFooter.sf-menu a:focus, #navbarFooter.sf-menu a:hover, #navbarFooter.sf-menu a:active
+{
+	outline: 0;
+}
+
+#navbarFooter.sf-menu li.ui-state-hover a
+{
+/*
+	text-shadow: #FFDE00 0px 0px 5px !important;
+*/
+/*
+	text-shadow: #6C0000 0px 1px 2px !important;
+*/
+}
+
+#navbarFooter.sf-menu li a.ui-state-active
+{
+/*
+	text-shadow: #6C0000 0px 1px 2px !important;
+*/
+}
+
+
+/*** arrows **/
+#navbarFooter.sf-menu a.sf-with-ul
+{
+	padding-right: 2.25em;
+	min-width: 1px;
+	/* trigger IE7 hasLayout so spans position accurately */
+}
+
+.sf-sub-indicator
+{
+	position: absolute;
+	display: block;
+	right: .75em;
+	top: 1.05em;
+	/* IE6 only */
+	width: 10px;
+	height: 10px;
+	text-indent: -999em;
+	overflow: hidden;
+	/* 8-bit indexed alpha png. IE6 gets solid image only */
+}
+
+a > .sf-sub-indicator
+{
+	/* give all except IE6 the correct values */
+	top: .8em;
+	/* use translucent arrow for modern browsers*/
+}
+
+/* apply hovers to modern browsers */
+a:focus > .sf-sub-indicator,
+a:hover > .sf-sub-indicator,
+a:active > .sf-sub-indicator,
+li:hover > a > .sf-sub-indicator,
+li.ui-state-hover > a > .sf-sub-indicator
+{
+	/* arrow hovers for modern browsers*/
+}
+
+/* point right for anchors in subs */
+#navbarFooter.sf-menu ul .sf-sub-indicator
+{
+}
+
+#navbarFooter.sf-menu ul a > .sf-sub-indicator
+{
+}
+
+/* apply hovers to modern browsers */
+#navbarFooter.sf-menu ul a:focus > .sf-sub-indicator,
+#navbarFooter.sf-menu ul a:hover > .sf-sub-indicator,
+#navbarFooter.sf-menu ul a:active > .sf-sub-indicator,
+#navbarFooter.sf-menu ul li:hover > a > .sf-sub-indicator,
+#navbarFooter.sf-menu ul li.ui-state-hover > a > .sf-sub-indicator
+{
+	/* arrow hovers for modern browsers*/
+}
+
+/*** shadows for all but IE6 ***/
+.sf-shadow ul
+{
+	padding: 0 8px 9px 0;
+}
+
+.sf-shadow ul.sf-shadow-off
+{
+}

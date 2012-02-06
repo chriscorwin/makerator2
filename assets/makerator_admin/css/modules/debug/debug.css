@@ -1,0 +1,415 @@
+#debugbox.active
+{
+	z-index: 10000;
+	height: 380px;
+	overflow: auto;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	width: 650px;
+}
+
+div.debug_output_block
+{
+	padding: 1em .5em 1em .5em;
+	margin: 1em .5em 1em .5em;
+}
+
+
+div.debug div.close
+{
+	clear: both;
+	display: block;
+	line-height: 1px;
+	font-size: 1px;
+	overflow: hidden;
+	padding: 0 !important;
+	margin: 0 !important;
+	margin-bottom: -1px !important;
+}
+
+div.debugfiltercontainer
+{
+	display: block;
+	margin: 1em .5em 50px .5em;
+	padding: .5em;
+	position: fixed;
+	top: 80px;
+	right: auto;
+	z-index: 10000;
+	-webkit-box-shadow: #000 0px 10px 15px;
+	-moz-box-shadow: #000 0px 10px 15px;
+	box-shadow: #000 0px 10px 15px;
+	
+}
+
+form.debugfilter *
+{
+	font-size: 11px;
+}
+
+
+
+/*
+
+form.debugfilter h1
+{
+	font-size: 24px;
+	line-height: 24px;
+	margin: 0 0 0 0;
+	padding: 0 0 0 18px;
+	text-align: center;
+	width: 90px;
+}
+
+form.debugfilter i
+{
+}
+
+form.debugfilter pre
+{
+	font-size: 10px;
+	line-height: 10px;
+	margin-bottom: 5px;
+	text-align: right;
+	cursor: pointer;
+}
+
+form.debugfilter table
+{
+	width: 100%;
+	margin-bottom: 8px;
+}
+
+form.debugfilter td
+{
+	white-space: nowrap;
+}
+
+form.debugfilter td.search
+{
+	width: 160px;
+}
+
+form.debugfilter input
+{
+}
+
+form.debugfilter td.search input
+{
+	width: 100%;
+	height: 15px;
+	line-height: 15px;
+	padding: 0;
+	display: block;
+}
+
+form.debugfilter label
+{
+	float: left;
+	display: block;
+	clear: both;
+}
+
+form.debugfilter label input
+{
+	margin: 2px 5px 1px 10px;
+	float: left;
+}
+
+form.debugfilter div.more
+{
+	padding-top: 6px;
+	display: none;
+}
+
+div.variables,
+div.timers,
+div.customTags,
+div.clientHeaders
+{
+	font-size: 10px;
+	margin-bottom: 14px;
+	padding: 13px 19px 19px;
+	white-space: pre-wrap;
+	display: none;
+}
+
+div.timers th,
+div.variables th,
+div.customTags th
+{
+	text-align: left;
+	font-size: 10px;
+}
+
+div.timers td,
+div.variables td,
+div.customTags td
+{
+	padding-right: 10px;
+	font-size: 10px;
+}
+
+div.timers table
+{
+	width: 100%;
+}
+
+div.timers table td
+{
+	line-height: 11px;
+}
+
+div.timers table td.perc
+{
+	width: 50%;
+}
+
+div.timers table td.perc div
+{
+}
+
+div.debug .match
+{
+}
+
+div.debug div.results
+{
+	margin: 1em .5em .5em .5em;
+	padding: 1em .5em .5em .5em;
+}
+
+div.debug div.results h2
+{
+	font-size: 18px;
+	font-weight: normal;
+	padding-bottom: 5px;
+	padding-left: 0;
+	padding-right: 0;
+	padding-top: 10px;
+	clear: both;
+}
+
+div.debug div.results div h2
+{
+	padding-top: 5px;
+}
+
+div.debug div.results h3
+{
+	font-size: 13px;
+	margin: 0 -3px 1px;
+	padding: 2px 3px;
+	clear: both;
+}
+
+div.debug div.results h3.hasChildren
+{
+	cursor: pointer;
+}
+
+div.debug div.results h3.hasChildren:hover
+{
+}
+
+div.debug div.results span
+{
+	clear: both;
+	display: block;
+}
+
+div.debug div.results span span
+{
+	margin: 0;
+	padding: 0;
+}
+
+div.debug div.results li span
+{
+	clear: right;
+	float: left;
+	display: block;
+	margin: 1px 0 0 3px;
+}
+
+div.debug div.results label
+{
+	font-weight: normal;
+	font-size: 11px;
+	float: left;
+	clear: left;
+	cursor: pointer;
+}
+
+div.debug div.results label b
+{
+	font-size: 11px;
+}
+
+div.debug div.results span.string
+{
+	white-space: pre-wrap;
+	overflow: hidden;
+}
+
+div.debug div.results span.left
+{
+	clear: right;
+	display: inline;
+	float: left;
+	padding: 0 0 0 5px;
+}
+
+div.debug div.results span.type
+{
+	margin: 0 0 4px 4px;
+	clear: right;
+	float: left;
+}
+
+div.debug div.results span.type span.type
+{
+}
+
+div.debug div.results span.type span.type span.type
+{
+}
+
+div.debug div.results span.type span.type span.type span.type
+{
+}
+
+div.debug div.results span.type i
+{
+	font-weight: bold;
+	font-size: 12px;
+	font-style: normal;
+	text-transform: capitalize;
+	line-height: 150%;
+	margin: 0 6px -6px 6px;
+}
+
+div.debug div.results ul
+{
+	margin: 0 5px 5px 5px;
+	padding: 0px;
+}
+
+div.debug div.results ul li
+{
+	list-style-type: disc;
+	list-style: none;
+	clear: both;
+	margin-left: 15px;
+	margin-right: 15px;
+	line-height: 150%;
+}
+
+div.debug div.results label b
+{
+	font-weight: normal;
+	padding: 0 3px 0 3px;
+	white-space: pre-wrap;
+}
+
+div.debug div.results pre
+{
+	font-size: 10px;
+	font-family: verdana;
+	white-space: pre;
+}
+
+div.debug div.results div
+{
+	margin: 3px 0px 3px 0px;
+	padding: 2px 5px 2px 5px;
+}
+
+div.debug div.results div div
+{
+}
+
+div.debug div.results div div div
+{
+}
+
+div.debug div.results div div div div
+{
+}
+
+div.debug div.results div div div div div
+{
+}
+
+div.debug div.results div div div div div div
+{
+}
+
+div.debug div.results div div div div div div div
+{
+}
+
+div.debug div.results span.time
+{
+	float: right;
+	margin-top: -16px;
+}
+
+div.debug div.results code
+{
+	display: block;
+	margin-bottom: 4px;
+	padding: 6px 8px;
+	clear: both;
+}
+
+div.debug div.results code,
+div.debug div.results code *
+{
+	font-family: verdana, monaco, courier, monospace !important;
+	font-size: 10px !important;
+}
+
+div.debug div.results .js span,
+div.debug div.results .css span,
+div.debug div.results .xml span,
+div.debug div.results .html span,
+div.debug div.results .lasso span,
+div.debug div.results .sql span
+{
+	display: inline;
+}
+
+div.debug div.results .sql
+{
+	white-space: pre-wrap;
+	margin: 3px 0px;
+	padding: 3px;
+}
+
+div.debug div.results .xml,
+div.debug div.results .html
+{
+	white-space: pre-wrap;
+}
+
+div.debug div.results .error
+{
+	margin-bottom: 3px;
+	padding: 2px 5px;
+	width: auto;
+}
+
+div.debug div.results .slow
+{
+}
+
+div.debug div.results .reallySlow
+{
+}
+
+div.debug div.results .stupidSlow
+{
+}
+*/

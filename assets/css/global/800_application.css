@@ -1,0 +1,231 @@
+
+#masthead
+{
+	background-image: url(/assets/images/chriscorwin-masthead-948x180.gif);
+	display: block;
+	width: 960px;
+	height: 180px;
+	margin: 20px 0;
+	background-repeat: no-repeat;
+}
+
+	#masthead strong
+	{
+		display: none;
+	}
+
+
+
+
+#debugContent .ui-state-debug .ui-widget-header
+{
+	background: none !important;
+	border: none !important;
+}
+
+
+#debugContent .ui-state-debug .ui-widget-content p
+{
+	font-size:100%;
+	line-height: 1.4em !important;
+	font-family:mono-space,monospace;
+	background: none !important;
+	border: none !important;
+	color: #fff;
+	
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+
+#errorContent .ui-state-error .ui-widget-header
+{
+	background: none !important;
+	border: none !important;
+}
+
+
+#errorContent .ui-state-error .ui-widget-content p
+{
+	font-size:100%;
+	line-height: 1.4em !important;
+	font-family:mono-space,monospace;
+	background: none !important;
+	border: none !important;
+	color: #fff;
+	
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+
+
+#makeKeywordUrlMatch
+{
+	margin: 1%;
+}
+
+
+a.ui-page-action.ui-state-default
+{
+	color: #515151 !important;
+	border: none !important;
+	background: none !important;
+}
+
+a.ui-page-action.ui-state-active, a.ui-page-action.ui-state-default.ui-state-hover, a.ui-page-action.ui-state-active.ui-state-hover
+{
+	color: #990000 !important;
+	border: none !important;
+	background: none !important;
+}
+		a.ui-page-action.ui-state-default.ui-state-hover
+		{
+			text-decoration: underline;
+		}
+
+
+
+
+
+div.border-i
+{
+	padding-right: 3px !important;
+	margin-right: 4px !important;
+	border-right: 1px solid #515151 !important;
+}
+
+div.colborder-i
+{
+	padding-right: 13px !important;
+	margin-right: 14px !important;
+	border-right: 1px solid #515151 !important;
+}
+
+div.design-outline
+{
+	outline: 1px solid red;
+}
+
+
+
+.content .content-namespace
+{
+
+}
+		.content .content-promo-people, .content .content-intro
+		{
+			font-family: "Georgia", serif;
+		}
+		
+				.content .content-promo.ui-widget-content, .content .content-intro.ui-widget-content
+				{
+					padding-right: 19px;
+					padding-left: 19px;
+				}
+				
+						.content .content-intro .content-callaway
+						{
+							text-align: right;
+							text-transform: lowercase;
+						}
+				
+				
+				.content .content-promo-car
+				{
+				}
+						.content .content-promo-car a:link
+						{
+							color: #9C0000;
+							text-decoration: none;
+						}
+						.content .content-promo-car h5 span.price
+						{
+							color: #333;
+							padding-left: 3em;
+						}
+						
+						.content .content-promo-car p, .content .content-promo-car dl.horizontal
+						{
+							font-size: .92em;
+							margin: .25em 0 !important;
+						}
+								
+								.content .content-promo-car p
+								{
+								}
+								
+								
+								.content .content-promo-car dl.horizontal
+								{
+									display: block;
+								}
+										.content .content-promo-car dl.horizontal dt
+										{
+											float: left;
+											clear: none;
+											padding-right: .42em;
+											margin: 0;
+										}
+										.content .content-promo-car dl.horizontal dd
+										{
+											float: left;
+											clear: none;
+											padding-right: 1.1em;
+											margin: 0;
+										}
+		
+
+
+
+
+.content .design-namespace
+{
+	
+}
+		.content .design-text-align-right
+		{
+			text-align: right;
+		}
+		
+		.content .design-text-align-left
+		{
+			text-align: left;
+		}
+
+		.content div.column.design-box
+		{
+			padding:1.5em;
+			margin-bottom:1.5em;
+			background: none;
+		}
+				
+		.content .design-pad-1
+		{
+			padding-right:9px;
+			padding-left:10px;
+		}
+		
+			.content img.design-placeholder
+			{
+				outline: 1px solid #515151; background: #666;
+			}
+			
+			.content img.design-box
+			{
+				padding: 0;
+				margin: 1.5em;
+			}
+
+
+.ui-state-loading
+{
+	width: 250px;
+	margin: 0px;
+}
